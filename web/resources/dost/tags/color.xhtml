@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+ 
+    <cc:interface>
+        <cc:attribute name="value" type="java.lang.String" default="#000000" />
+    </cc:interface>
+
+    <cc:implementation>
+        <div id="#{cc.clientId}">
+            <input jsf:id="#{cc.id}" name="#{cc.id}" jsf:value="#{cc.attrs.value}" type="color" />
+        </div>
+    </cc:implementation>
+    
+</html>
