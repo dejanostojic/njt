@@ -17,22 +17,22 @@
         <div class="container">
             <div class="header"> 
                 <div class="logo">
-                    <h:outputLink value="index.xhtml" title="Home"><h:graphicImage name="img/fon.jpg" library="dost"/></h:outputLink>
+                    <h:outputLink value="/index.xhtml" title="Početna"><h:graphicImage name="img/fon.jpg" alt="FON logo" library="dost"/></h:outputLink>
                 </div>
             </div>
             
             <div id='cssmenu'>
                 <ul>
-                   <li class='active'><a href='index.html'>Home</a></li>
-                   <li class='has-sub'><a href='#'>Products</a>
+                   <li class='active'><a href='/index.xhtml'>Početna</a></li>
+                   <li class='has-sub'><a href='/admin/play/index.xhtml'>Predstave</a>
                       <ul>
-                         <li class='has-sub'><a href='#'>Product 1</a>
+                         <li class='has-sub'><a href='/admin/play/index.xhtml'>Lista predstava</a>
                             <ul>
                                <li><a href='#'>Sub Item</a></li>
                                <li><a href='#'>Sub Item</a></li>
                             </ul>
                          </li>
-                         <li class='has-sub'><a href='#'>Product 2</a>
+                          <li class='has-sub'><h:form><h:commandLink value="Nova predstava" id="withIcon" actionListener="#{playList.newPlay}" /></h:form>
                             <ul>
                                <li><a href='#'>Sub Item</a></li>
                                <li><a href='#'>Sub Item</a></li>
@@ -40,7 +40,12 @@
                          </li>
                       </ul>
                    </li>
-                   <li><a href='#'>About</a></li>
+                   <li class='has-sub'><a href='/admin/perf/index.xhtml'>Izvođenja</a>
+                       <ul>
+                           <li><a href='/admin/perf/index.xhtml'>Lista izvođenja</a></li>
+                            <li><h:form><h:commandLink value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" /></h:form></li>
+                       </ul>
+                   </li>
                    <li><a href='#'>Contact</a></li>
                 </ul>
                 </div>

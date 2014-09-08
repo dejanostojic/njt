@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="/WEB-INF/templates/admin.xhtml">
+            <ui:define name="title">#{perfForm.edit ? 'Izmena predstave' : 'Nova predstava'}</ui:define>
+            <ui:define name="stripe1">
+                <div>Filter</div>
+            </ui:define>
+            <ui:define name="content">
+                <h:panelGroup id="izmena" rendererType="block" rendered="#{perfForm.edit}">
+                    <h1>Izmena izvođenja</h1>
+                </h:panelGroup>
+                <h:panelGroup id="nova" rendererType="block" rendered="#{not perfForm.edit}">
+                    <h1>Novo izvođenje</h1>
+                </h:panelGroup>
+
+                
+                <h:form>
+                    <p:messages id="p-messages"/>
+                    
+                    <div class="holder">
+                        <label class="label">Scena</label>
+                        <p:selectOneMenu required="true" requiredMessage="Obavezno izabrati scenu" value="#{perfForm.data.stageId}" style="width: 200px;">
+                            <f:selectItems value="${perfForm.stages}" />
+                        </p:selectOneMenu>
+                        
+                    </div>
+                    
+                    <div class="holder">
+                        <label for="play" class="label">Predstava: </label>
+                        <p:selectOneMenu id="play" required="true" requiredMessage="obavezno izabrati predstavu" value="#{perfForm.data.playId}" style="width: 200px;">
+                            <f:selectItems value="${perfForm.plays}" />
+                        </p:selectOneMenu>
+                    </div>
+                    
+                    <div class="holder">
+                        <p:outputLabel for="restricted" styleClass="label" value="Datum" />
+                        <p:calendar id="restricted" value="#{perfForm.startDate}" required="true" requiredMessage="Datum je obavezno polje" mindate="1/9/14" style="width: 200px;"/>
+                    </div>
+                    
+                    <div class="holder">
+                        <p:outputLabel for="time" value="Time:" styleClass="label" />
+                        <p:calendar id="time" required="true" requiredMessage="Obavezno izaberite datum" value="#{perfForm.startTime}" pattern="HH:mm a" timeOnly="true"  />
+                    </div>
+                    
+                    <div class="holder">
+                        <h:outputLabel for="prefix" value="Cena: " styleClass="label" />
+                        <p:spinner id="prefix" value="#{perfForm.data.price}" min="0" required="true" requiredMessage="Obaezno unesite cenu" />
+                    </div>
+                    
+                    
+                    
+
+                    <h:panelGroup rendererType="block" style="margin-top: 10px">
+                        <p:commandButton value="Sačuvaj" action="#{perfForm.save}" update="p-messages p-messages-2" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="false"/>
+                    </h:panelGroup>
+
+                    <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                        <p:messages id="p-messages-2"/>
+                    </p:dialog>
+                </h:form>
+                
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

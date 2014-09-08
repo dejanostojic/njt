@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="/WEB-INF/templates/admin.xhtml">
+            <ui:define name="title">Lista izvođenja</ui:define>
+            <ui:define name="stripe1">
+                <div>Filter</div>
+            </ui:define>
+            <ui:define name="content">
+                <div>
+                    <h1>Lista izvođenja</h1>
+                    <p:commandButton value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" icon="ui-icon-new" />
+                    <h:form>
+                        <p:dataTable id="plays-table" var="perf" value="#{perfList.list}">
+                            <p:column headerText="Datum">
+                                <h:outputText value="#{perf.startDate}" />
+                            </p:column>
+
+                            <p:column headerText="Vreme">
+                                <h:outputText value="#{perf.startTime}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Predstava">
+                                <h:outputText value="#{perf.play.title}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Scena">
+                                <h:outputText value="#{perf.stage.name}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Cena">
+                                <h:outputText value="#{perf.price}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Akcije">
+                                <p:commandButton image="ui-icon-pencil" value="Izmeni" actionListener="#{perfList.editData(perf)}" />
+                                <p:commandButton update="plays-table" value="Obrisi" actionListener="#{perfList.deleteData(perf)}" >
+                                    <p:confirm header="Brisanje" message="Da li ste sigurni?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <p:commandButton value="Da" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Ne" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </h:form>
+                </div>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

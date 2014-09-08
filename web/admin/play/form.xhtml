@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:tags="http://xmlns.jcp.org/jsf/composite/dost/tags"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition template="/WEB-INF/templates/admin.xhtml">
+            <ui:define name="title">#{playForm.edit ? 'Izmena predstave' : 'Nova predstava'}</ui:define>
+            <ui:define name="stripe1">
+                <div>Filter</div>
+            </ui:define>
+            <ui:define name="content">
+                <h:panelGroup id="izmena" rendererType="block" rendered="#{playForm.edit}">
+                    <h1>Izmena predstave: #{playForm.data.title}</h1>
+                </h:panelGroup>
+                <h:panelGroup id="nova" rendererType="block" rendered="#{not playForm.edit}">
+                    <h1>Nova predstava</h1>
+                </h:panelGroup>
+
+
+                <h:form>
+                    <p:messages id="p-messages"/>
+                    <div class="holder">
+                        <label for="playTitle" class="label">Naziv: </label>
+                        <h:inputText id="playTitle"  required="true" requiredMessage="Obavezan je naslov" label="Naziv predstave" value="#{playForm.data.title}" />
+                        <p:message id="messageTitle" for="playTitle" binding="#{playForm.titleComp}" style="color: red" />
+                    </div>
+                    <div class="holder">
+                        <label class="label">O predstavi: </label>
+                        <p:editor id="editor" required="true" requiredMessage="Obavezno polje" widgetVar="editorWidget" value="#{playForm.data.about}" width="600" />
+                        <p:message id="messageAbout" for="editor" binding="#{playForm.aboutComp}" style="color: red" />
+                        <p:commandButton value="Obriši" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                    </div>
+
+                    <h:panelGroup rendererType="block" style="margin-top: 10px">
+                        <p:commandButton value="Sačuvaj" action="#{playForm.save}" update="p-messages p-messages-2 messageTitle messageAbout" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="true"/>
+                    </h:panelGroup>
+
+                    <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                        <p:messages id="p-messages-2"/>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
