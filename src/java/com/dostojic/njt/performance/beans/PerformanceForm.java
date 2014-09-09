@@ -11,6 +11,7 @@ import com.dostojic.njt.db.util.CommonUtils;
 import com.dostojic.njt.model.Stage;
 import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.performance.model.Performance;
+import com.dostojic.njt.performance.model.ex.PerformanceX;
 import com.dostojic.njt.play.dao.PlayDao;
 import com.dostojic.njt.play.model.Play;
 import com.dostojic.njt.util.FormBean;
@@ -27,7 +28,7 @@ import javax.faces.model.SelectItem;
  */
 @ManagedBean(name = PerformanceForm.MANAGED_BEAN_NAME)
 @SessionScoped
-public class PerformanceForm extends FormBean<Performance>{
+public class PerformanceForm extends FormBean<PerformanceX>{
 
     public static final String MANAGED_BEAN_NAME = "perfForm";
     
@@ -42,7 +43,7 @@ public class PerformanceForm extends FormBean<Performance>{
 
     @Override
     public String getViewUrl() {
-        return "/admin/perf/form.xhtml";
+        return "/admin/perf/tickets.xhtml";
     }
 
     @Override
@@ -102,8 +103,8 @@ public class PerformanceForm extends FormBean<Performance>{
     }
 
     @Override
-    public Performance newObject() {
-        return new Performance();
+    public PerformanceX newObject() {
+        return new PerformanceX();
     }
     
     public SelectItem[] getPlays(){

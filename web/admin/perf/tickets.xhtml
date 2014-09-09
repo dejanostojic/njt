@@ -1,0 +1,135 @@
+        <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                        xmlns:h="http://xmlns.jcp.org/jsf/html"
+                        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                        xmlns:p="http://primefaces.org/ui"
+                        xmlns:f="http://xmlns.jcp.org/jsf/core"
+                        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                        template="/WEB-INF/templates/admin.xhtml">
+            <ui:define name="head">
+                <style>
+table, td, th {
+    border: 1px solid green;
+}
+
+th {
+    background-color: green;
+    color: white;
+}
+</style>
+            </ui:define>
+            <ui:define name="title">Karte - #{perfForm.data.play.title}</ui:define>
+            <ui:define name="stripe1">
+                <div>Filter</div>
+            </ui:define>
+            <ui:define name="content">
+                <h1>Karte - #{perfForm.data.play.title}</h1>
+
+                <p:messages id="p-messages"/>
+
+                <div class="holder">
+                    <label class="label">Scena</label>
+                    <h:outputText value="#{perfForm.data.stage.name}" />
+                </div>
+
+                <div class="holder">
+                    <label for="play" class="label">Predstava: </label>
+                    <h:outputText value="#{perfForm.data.play.title}" />
+                </div>
+
+                <div class="holder">
+                    <p:outputLabel for="restricted" styleClass="label" value="Datum" />
+                    <p:calendar id="restricted" value="#{perfForm.startDate}" disabled="true" requiredMessage="Datum je obavezno polje" mindate="1/9/14" style="width: 200px;"/>
+                </div>
+
+                <div class="holder">
+                    <p:outputLabel for="time" value="Time:" styleClass="label" />
+                    <p:calendar id="time" required="true" requiredMessage="Obavezno izaberite datum" disabled="true" value="#{perfForm.startTime}" pattern="HH:mm a" timeOnly="true"  />
+                </div>
+
+                <div class="holder">
+                    <h:outputLabel for="prefix" value="Cena: " styleClass="label" />
+                    <h:outputText value="#{perfForm.data.price}" />
+                </div>
+
+                <h:form>
+                    <ui:remove>
+                        <p:dataGrid var="seat" value="#{perfForm.data.stage.seats}" columns="#{perfForm.data.stage.numberOfColumns}"
+                                    rows="#{perfForm.data.stage.numberOfRows}" paginator="false" id="tickets">
+
+                            <f:facet name="header">
+                                Karte
+                            </f:facet>
+
+                            <p:panel header="#{seat.row} - #{seat.column}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+
+                                    <h:outputText value="#{seat.row} - #{seat.column}" />
+
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </p:dataGrid>
+                    </ui:remove>
+                    
+              
+                    
+                    
+                    <c:set var="numCols" value="#{perfForm.data.stage.numberOfColumns}" />
+                    <c:set var="numRows" value="#{perfForm.data.stage.numberOfRows}" />
+                    <h:outputText value="#{numCols}" />
+                    
+                    <table>
+                        <tr>
+                            <th></th>
+                            <c:forEach begin="1" end="#{perfForm.data.stage.numberOfColumns}" var="i">
+                                <th>kolona #{i}</th>
+                            </c:forEach>
+                        </tr>
+                        <c:forEach items="#{perfForm.data.tickets}" var="ticket" varStatus="status" >
+                            
+                            <h:outputText value="&lt;tr&gt;" escape="false" rendered="#{status.count % numCols == 1}"/>
+                            <c:if test="#{status.count % numCols == 1}">
+                                <th>red #{ticket.seat.row}.</th>
+                            </c:if>
+                            
+                            <td data-ticket="true" data-status="#{ticket.free ? 'free' : ticket.sold ? 'sold' : ticket.reserved ? 'reserved' : 'in-store'}" style="background: #{ticket.free ? 'green' : ticket.sold ? 'red' : ticket.reserved ? 'blue' : 'orange'};" title="red #{ticket.seat.row}, kol: #{ticket.seat.column}"><h:outputText value="#{ticket.free ? 'Slobodna' : ticket.sold ? 'Prodata' : ticket.reserved ? 'Rezervisana' : 'Izabrana'}" /></td>
+                            
+                            <h:outputText value="&lt;/tr&gt;" escape="false" rendered="#{status.count % numCols == 0}"/>
+                            
+                            
+                        </c:forEach>
+
+                    </table>
+                    
+                   
+                </h:form>
+            </ui:define>
+            <ui:define name="js">
+                
+                <script type="text/javascript">
+                    /* <![CDATA[ */
+//                    $(document).ready(function (){alert('a ovde')});
+                    window.onload = function(){
+                        alert('aaaaaa')
+//                    document.querySelectorAll('td[data-ticket]').addEventListener("click", function(e){alert('status: ' + this['data-status'])}, false);
+                    var els = document.querySelectorAll('td[data-ticket]');
+                    for (var i=0; i<els.length; i++){
+                        var elem = els[i];
+                        console.log(elem.getAttribute('data-status'));
+                        elem.addEventListener("click", function(e){alert('status: ' + this.getAttribute('data-status') + ';<br /> title: ' + this.getAttribute('title'))}, false);
+                    }
+                    
+                    }
+                    
+                    /*function your_function(){
+                        alert('loaded');
+                    }
+                    if (window.attachEvent) {window.attachEvent('onload', your_function);}
+                    else if (window.addEventListener) {window.addEventListener('load', your_function, false);}
+                    else {document.addEventListener('load', your_function, false);}*/
+    
+    
+                     /* ]]> */
+                </script>
+            </ui:define>
+        </ui:composition>

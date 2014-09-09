@@ -5,9 +5,11 @@
 package com.dostojic.njt.db.dao;
 
 import com.dostojic.njt.model.Ticket;
+import com.dostojic.njt.model.ext.TicketX;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -123,6 +125,9 @@ public class TicketDao extends GenericDao<Ticket>{
         return instance;
     }
     
+    public List<TicketX> loadListByPerformanceId(long perfId){
+        return loadList("performance_id="+perfId, "", TicketX.class);
+    }
     
     
 }

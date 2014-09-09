@@ -12,8 +12,10 @@
             </ui:define>
             <ui:define name="content">
                 <div>
-                    <h1>Lista izvođenja</h1>
-                    <p:commandButton value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" icon="ui-icon-new" />
+                    <div style="margin-bottom: 15px;">
+                        <h1>Lista izvođenja</h1>
+                        <p:commandButton value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" icon="ui-icon-plus" />
+                    </div>
                     <h:form>
                         <p:dataTable id="plays-table" var="perf" value="#{perfList.list}">
                             <p:column headerText="Datum">
@@ -41,6 +43,7 @@
                                 <p:commandButton update="plays-table" value="Obrisi" actionListener="#{perfList.deleteData(perf)}" >
                                     <p:confirm header="Brisanje" message="Da li ste sigurni?" icon="ui-icon-alert" />
                                 </p:commandButton>
+                                <p:commandButton image="ui-icon-pencil" value="Prodaja karti" actionListener="#{perfList.viewData(perf)}" />
                             </p:column>
                             
                         </p:dataTable>

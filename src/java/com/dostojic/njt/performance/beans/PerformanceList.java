@@ -39,9 +39,16 @@ public class PerformanceList implements java.io.Serializable{
     
     public void editData(Performance p){
         PerformanceForm form = PerformanceForm.getInstance();
-        form.setData(p);
+        form.setData(new PerformanceX(p));
         form.setBackUrl(JsfUtils.getHttpServletReqest().getRequestURI());
         form.gotoForm();
+    }
+    
+    public void viewData(Performance p){
+        PerformanceForm form = PerformanceForm.getInstance();
+        form.setData(new PerformanceX(p));
+        form.setBackUrl(JsfUtils.getHttpServletReqest().getRequestURI());
+        form.gotoView();
     }
     
     public void deleteData(Performance p){

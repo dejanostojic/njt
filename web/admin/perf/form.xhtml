@@ -56,9 +56,15 @@
                     
                     
 
-                    <h:panelGroup rendererType="block" style="margin-top: 10px">
+                    <div style="margin-top: 10px">
                         <p:commandButton value="Sačuvaj" action="#{perfForm.save}" update="p-messages p-messages-2" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="false"/>
-                    </h:panelGroup>
+                        <a href="#{perfForm.backUrl}" >Nazad</a>
+                            
+                    </div>
+                    
+                    <div style="margin-top: 10px">    
+                        
+                    </div>
 
                     <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">
                         <p:messages id="p-messages-2"/>
