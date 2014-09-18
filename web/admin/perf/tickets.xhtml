@@ -34,6 +34,7 @@
             <ui:define name="content">
                 <h:panelGroup layout="block" rendered="#{not empty buyTicket.perf}">
                 <h1>Karte - #{buyTicket.perf.play.title}</h1>
+                <h3 id="startTest" onclick="startTest()">Start test</h3>
                 <ui:remove>
                 <h3 id="webSocketStart">Start websocket</h3>
                 <h3 id="webSocketStop">Stop websocket</h3>
@@ -65,39 +66,35 @@
                 </div>
                 
                 </ui:remove>
-                
-                <div class="holder">
-                    <h1>Karte</h1>
-                </div>
-                
+
                 <h:form id="ticketsTableForm">
                     <p:growl id="growl" showDetail="false" sticky="false" />  
-                    <div>
-                        
-                        
                         
                         <h:panelGroup id="ticTable" layout="block">
-                            
+                            <div>
                         <table id="seats-table">
                            <tr>
                                <th></th>
                                <ui:repeat value="#{util:createArray(buyTicket.perf.stage.numberOfColumns)}" var="a" varStatus="stat">
-                                   <th>kolona #{stat.index + 1}.</th>
+                                   <th>k #{stat.index + 1}.</th>
                                </ui:repeat>
 
                            </tr>
 
                             <ui:repeat value="#{buyTicket.tickets}" id="repeatTickets" var="ticket" varStatus="status">
 
-                               <h:outputText  value="&lt;tr&gt;&lt;th&gt;red #{ticket.seat.row}.&lt;/th&gt;" escape="false" rendered="#{status.index % buyTicket.perf.stage.numberOfColumns == 0}"/>
+                               <h:outputText  value="&lt;tr&gt;&lt;th&gt;r #{ticket.seat.row}.&lt;/th&gt;" escape="false" rendered="#{status.index % buyTicket.perf.stage.numberOfColumns == 0}"/>
                                
-                               <td data-ticket="true" data-ticket-id="seat_#{ticket.seatId}"  data-status="#{ticket.free ? 'free' : ticket.sold ? 'sold' : ticket.reserved ? 'reserved' : 'in-store'}" title="red #{ticket.seat.row}, kol: #{ticket.seat.column}, id: #{ticket.id}" class="text-center #{ticket.free ? 'ticket-free' : ticket.sold ? 'ticket-sold' : ticket.reserved ? 'ticket-reserved' : 'ticket-in-store'}">
-                                   <p:commandLink value="Slobodna" rendered="#{ticket.free}" oncomplete="actionComplete('#{component.clientId}');" action="#{buyTicket.addToStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeInStore},'#{component.clientId}');" update="@form" />
+                               <td id="seat_#{ticket.seatId}" data-ticket="true" data-seat-id="#{ticket.seatId}" data-status-code="#{ticket.status}" data-col="#{ticket.seat.column}" data-row="#{ticket.seat.row}"
+                                   title="red #{ticket.seat.row}, kol: #{ticket.seat.column}, status: #{ticket.statusText}" 
+                                   class="text-center #{ticket.free ? 'ticket-free' : ticket.sold ? 'ticket-sold' : ticket.reserved ? 'ticket-reserved' : 'ticket-in-store'}">
+                                   <ui:remove>
+                                   <p:commandLink value=" " rendered="#{ticket.free}" pt:data-status="active" oncomplete="actionComplete('#{component.clientId}');" action="#{buyTicket.addToStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeInStore},'#{component.clientId}');" update="@form" />
                                    <p:commandLink value="Izabrana" rendered="#{ticket.inStore}" action="#{buyTicket.removeFromStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeFree},'#{component.clientId}');"  update=":ticketsTableForm:orderList :ticketsTableForm:growl :ticketsTableForm:ticTable" />
                                    <p:commandLink styleClass="hide" value="Blokiraj" pt:data-ticket-block="#{ticket.seatId}" action="#{buyTicket.makeUnavailable(ticket)}" update="@form" />
                                    <h:outputText value="Prodata" rendered="#{ticket.sold}" />
-                                   
                                    <h:outputText value="Rezervisana" rendered="#{ticket.reserved}" />
+                                   </ui:remove>
                                </td>
                                
                                <h:outputText value="&lt;/tr&gt;" escape="false" rendered="#{(status.index + 1) % buyTicket.perf.stage.numberOfColumns == 0}"/>
@@ -106,7 +103,7 @@
                            </ui:repeat>
 
                        </table>
-                            
+                            </div>
                         <h:panelGroup id="orderList" layout="block" >
                             <h:panelGroup layout="block" rendered="#{not empty buyTicket.selectedTickets and fn:length(buyTicket.selectedTickets) > 0}">
                                 <ul>
@@ -120,7 +117,7 @@
                             </h:panelGroup>
                         </h:panelGroup>
                        </h:panelGroup>
-                       </div>
+                       
                 </h:form>
                 </h:panelGroup>
                 
@@ -133,23 +130,22 @@
                 <script type="text/javascript">
                     /* <![CDATA[ */
                     
-                    var wSocket;
-
-                    var okSeats = {};
-                    var onWaitSeats = {};
-                    var tableCache = document.getElementById("seats-table");
-                    
-                    function disable(e){
-                        console.log('a');
-                        e.stopPropagation();
-                        return false;
-                    }
+                    var wSocket,
+                        okSeats = {}, 
+                        onWaitSeats = {},
+                        tableCache;
                     
                     function actionComplete(clid){
                         console.log('ONCOMPLETE!!! ' + clid);
-                        
                     }
                     
+                    
+                    
+                    function getRandomSeatId(min, max) {
+                        console.log('seat_' + (Math.floor(Math.random() * (max - min + 1)) + min));
+                        return 'seat_' + (Math.floor(Math.random() * (max - min + 1)) + min);
+                    }
+
                     function initializeReception(){
                         var host = "ws://njt-loc:8080/dost/tickets/#{buyTicket.perfId}";
                         wSocket = new WebSocket(host);
@@ -167,14 +163,12 @@
                                     makeSeatOk(msg.seatId);
                                 }
                                 if (msg.addedStatus == '#{buyTicket.msgStAllreadyThere}'){
-                                    console.log('NIJE UBACENO VEC JE POSTOJALO!!!!');
+                                    makeSeatReserved(msg.seatId);
+                                    console.log('NIJE USPELO DODAVANJE!');
                                 }
                                 if (msg.addedStatus == '#{buyTicket.msgStNew}'){
+                                    makeSeatReserved(msg.seatId);
                                     
-                                   var elem = tableCache.querySelector('a[data-ticket-block="' + msg.seatId + '"]');
-                                   if (typeof elem.onclick == "function") {
-                                        elem.onclick.apply(elem);
-                                    }
                                     console.log('NEKO DRUGI JE DODAO!');
                                 }
                             };
@@ -196,7 +190,7 @@
                     function websocketClose(){
                         wSocket.close();
                     }
-                    
+                    /*
                     function makeSeatOk(seatId){
                         console.log('makeSeatOk');
                         var computedSeatId = 'seat_' + seatId;
@@ -217,7 +211,7 @@
                         elem.className = elem.className.replace( /(?:^|\s)loading-back(?!\S)/g , '' );
                         
                     }
-                    
+                
                     function sendMessage(seatId,status,componentId){
                         
                         console.log('pozvan send message');
@@ -254,14 +248,106 @@
                         
                         
                     }
+                    */
+                       
+                    function makeSeatReserved(seatId){
+                        var elem = document.getElementById('seat_'+seatId);
+                        elem.setAttribute('data-status-code','#{buyTicket.statusCodeReserved}');
                         
+                        elem.className = 'ticket-reserved';
+                        elem.title='red ' + elem.getAttribute('data-row') + ', kol: ' + elem.getAttribute('data-col') + ', status: Rezervisana'; 
+                    }
+                    
+                    function makeSeatOk(seatId){
+                        console.log('makeSeatOk');
+                        var computedSeatId = 'seat_' + seatId;
+                        var elem = onWaitSeats[computedSeatId];
+                        
+                        delete onWaitSeats[computedSeatId];
+                        okSeats[computedSeatId] = elem;
+                        
+                        console.log('okSeats ' + JSON.stringify(okSeats));
+                        
+                        elem.setAttribute('data-status-code','#{buyTicket.statusCodeInStore}');
+                        
+                        elem.className = 'ticket-in-store';
+                        elem.title='red ' + elem.getAttribute('data-row') + ', kol: ' + elem.getAttribute('data-col') + ', status: Izabrana'; 
+                        
+                    }
+                    
+                    function handleSeatClick(elemSeatId){
+                        console.log('pozvan send message');
+                        
+                        console.log('compSeatId: ' + elemSeatId);
+                        var seat = document.getElementById(elemSeatId);
+                        if (!okSeats[elemSeatId]){
+                            
+                            onWaitSeats[elemSeatId] = seat;
+                            
+                            console.log('onWaitSeats: ' + JSON.stringify(onWaitSeats));
+
+                            seat.className += ' loading-back';
+                            console.log('stat code: '+seat.getAttribute('data-status-code'));
+                            console.log('data-seat-id:  '+seat.getAttribute('data-seat-id'));
+                            console.log('saljem: ' + JSON.stringify({
+                                'status': seat.getAttribute('data-status-code'),
+                                'seatId': seat.getAttribute('data-seat-id'),
+                                'perfId': #{buyTicket.perfId}
+                                }));
+                            wSocket.send(JSON.stringify({
+                                'status': seat.getAttribute('data-status-code'),
+                                'seatId': seat.getAttribute('data-seat-id'),
+                                'perfId': #{buyTicket.perfId}
+                                }));
+                            
+                            return false;
+                        }else{
+                            delete okSeats[elemSeatId];
+                            console.log('seat ok ok');
+                            
+                            return true;
+                        }
+                    }
+    
+                    function dataTicketClick(e){
+                        handleSeatClick(this.id);
+                    }
+                    
+                    
+                    
                     window.onload = function(){
+                        tableCache = document.getElementById("seats-table");
                         websocketOpen();
+                        var elems = tableCache.querySelectorAll('td[data-ticket="true"]');
+                        
+                        for(var i=0; i<elems.length; i++ ){
+                            console.log('elem: ' + elems[i].title);
+                            elems[i].addEventListener('click', dataTicketClick,false);
+                        }
+                        
+                        
+                        
+                        
+                        /*
+                        var els = document.querySelectorAll('td[data-ticket]');
+                    for (var i=0; i<els.length; i++){
+                        var elem = els[i];
+                        console.log(elem.getAttribute('data-status'));
+                        elem.addEventListener("click", function(e){alert('status: ' + this.getAttribute('data-status') + ';<br /> title: ' + this.getAttribute('title'))}, false);
+                        */
                     };
                     
                     
                     
-                    
+                    function startTest(){
+                            setInterval(randomClick, 2000);
+                        }
+
+                        function randomClick(){
+                            
+                            handleSeatClick(getRandomSeatId(0,300));
+//                            handleSeatClick(getRandomSeatId(301,396));
+                        }
                     
                     /*function your_function(){
                         alert('loaded');

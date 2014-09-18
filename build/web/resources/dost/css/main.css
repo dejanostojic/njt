@@ -115,7 +115,7 @@ body > .container {
 
 
 .content {
-    margin-left: 240px;
+    /*margin-left: 240px;*/
 }
 
 .header {
@@ -533,9 +533,11 @@ td.ticket-sold{
 }
 td.ticket-reserved{
     background-color: grey;
+    pointer-events: none;
 }
 td.ticket-in-store{
     background-color: yellow;
+    pointer-events: none;
 }
 
 .hide{
