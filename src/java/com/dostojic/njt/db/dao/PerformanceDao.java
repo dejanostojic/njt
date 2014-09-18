@@ -4,7 +4,7 @@
  */
 package com.dostojic.njt.db.dao;
 
-import com.dostojic.njt.model.Performance;
+import com.dostojic.njt.performance.model.Performance;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

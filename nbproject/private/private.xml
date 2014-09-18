@@ -5,53 +5,30 @@
         <group name="swing-theatre">
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/WEB-INF/web.xml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Ticket.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/WrappedException.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/tickets.xhtml</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/META-INF/context.xml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceForm.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/index.xhtml</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/play/index.xhtml</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/BuyTicket.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceList.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/TicketsEndpoint.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/beans/PlayList.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/JsfMessage.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/WEB-INF/templates/admin.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/ResultSetProcessor.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/TicketStatus.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/Database.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/play/form.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/model/Performance.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/WrappedSQLException.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Artist.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Play.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/model/ex/PerformanceX.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/ArtistDao.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/JsfUtils.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketMessage.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/ext/TicketX.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/TicketDao.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketDecoder.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/rewrite/ApplicationConfigurationProvider.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/form.xhtml</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/resources/dost/css/main.css</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/nbproject/project.properties</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/beans/PlayForm.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/FormBean.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/GenericDao.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Performance.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Stage.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/util/QueryUtils.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/annotation/PrimaryKey.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/model/Play.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/dao/PerformanceDao.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketEncoder.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/index.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/AbstractLister.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/play/index.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceList.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/index.html</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/ArtistPlay.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/PlayDao.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/dao/PlayDao.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/User.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/BaseListFilter.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/JsfUtils.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Seat.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/ext/TicketX.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/annotation/Table.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/util/DBProperties.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/annotation/Column.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/resources/dost/tags/color.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/form.xhtml</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/util/PaginationHelper.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/resources/dost/css/main.css</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/util/CommonUtils.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/ext/ArtistPlayX.java</file>
         </group>
     </open-files>
 </project-private>

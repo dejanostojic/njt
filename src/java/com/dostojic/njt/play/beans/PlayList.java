@@ -47,10 +47,11 @@ public class PlayList implements java.io.Serializable{
     }
     
     public void newPlay(ActionEvent event){
-        PlayForm playForm = PlayForm.getInstance();
-        playForm.setBackUrl("/admin/play");
-        playForm.newData();
-        playForm.gotoForm();
+//        PlayForm playForm = PlayForm.getInstance();
+//        playForm.setBackUrl("/admin/play");
+//        playForm.newData();
+//        playForm.gotoForm();
+        PlayForm.getInstance().neww();
     }
     
     public void editPlay(Play p){

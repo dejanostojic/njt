@@ -103,12 +103,12 @@ public class TicketDao extends GenericDao<Ticket>{
         add(new ColumnMapper("status") {
             @Override
             public void resultSetToDto(ResultSet rs, Ticket ticket, int index) throws SQLException {
-                ticket.setStatus(rs.getInt(index));
+                ticket.setStatus(rs.getShort(index));
             }
             
             @Override
             public void dtoToParam(Ticket ticket, PreparedStatement statement, int paramIndex) throws SQLException {
-                statement.setInt(paramIndex, ticket.getStatus());
+                statement.setShort(paramIndex, ticket.getStatus());
             }
         });
     }

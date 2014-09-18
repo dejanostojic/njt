@@ -17,7 +17,7 @@ public interface TicketStatus {
     public static final short STATUS_SOLD = 2;
     public static final short STATUS_IN_STORE = 3;
     
-    public static final Map<Short, String> getText = new HashMap<Short, String>() {
+    public static final Map<Short, String> textStatuses = new HashMap<Short, String>() {
         {
             put(STATUS_FREE, "Slobodna");
             put(STATUS_RESERVED, "Rezervisana");
@@ -25,4 +25,8 @@ public interface TicketStatus {
             put(STATUS_IN_STORE, "Izabrana");
         }
     };
+    
+    public static String getTextStatus(short status){
+        return textStatuses.get(status);
+    }
 }

@@ -4,122 +4,264 @@
                         xmlns:p="http://primefaces.org/ui"
                         xmlns:f="http://xmlns.jcp.org/jsf/core"
                         xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                        xmlns:util="http://dostojic.com/util/functions"
+                        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                         template="/WEB-INF/templates/admin.xhtml">
+            
+            
             <ui:define name="head">
+                
                 <style>
-table, td, th {
-    border: 1px solid green;
-}
+                    table{
+                        margin-left:auto; 
+                        margin-right:auto;
+                    }
+                    
+                    table, td, th {
+                        border: 1px solid #152B48;
+                    }
 
-th {
-    background-color: green;
-    color: white;
-}
-</style>
+                    th {
+                        background-color: #152B48;
+                        color: white;
+                    }
+                </style>
             </ui:define>
-            <ui:define name="title">Karte - #{perfForm.data.play.title}</ui:define>
+            <ui:define name="title">Karte - #{buyTicket.perf.play.title}</ui:define>
             <ui:define name="stripe1">
                 <div>Filter</div>
             </ui:define>
             <ui:define name="content">
-                <h1>Karte - #{perfForm.data.play.title}</h1>
-
-                <p:messages id="p-messages"/>
+                <h:panelGroup layout="block" rendered="#{not empty buyTicket.perf}">
+                <h1>Karte - #{buyTicket.perf.play.title}</h1>
+                <ui:remove>
+                <h3 id="webSocketStart">Start websocket</h3>
+                <h3 id="webSocketStop">Stop websocket</h3>
+                <h3 id="makeSeatOk">makeSeatOk</h3>
 
                 <div class="holder">
                     <label class="label">Scena</label>
-                    <h:outputText value="#{perfForm.data.stage.name}" />
+                    <h:outputText value="#{buyTicket.perf.stage.name}" />
                 </div>
 
                 <div class="holder">
                     <label for="play" class="label">Predstava: </label>
-                    <h:outputText value="#{perfForm.data.play.title}" />
+                    <h:outputText value="#{buyTicket.perf.play.title}" />
                 </div>
 
                 <div class="holder">
                     <p:outputLabel for="restricted" styleClass="label" value="Datum" />
-                    <p:calendar id="restricted" value="#{perfForm.startDate}" disabled="true" requiredMessage="Datum je obavezno polje" mindate="1/9/14" style="width: 200px;"/>
+                    <p:calendar id="restricted" value="#{buyTicket.perf.startDate}" disabled="true" requiredMessage="Datum je obavezno polje" mindate="1/9/14" style="width: 200px;"/>
                 </div>
 
                 <div class="holder">
                     <p:outputLabel for="time" value="Time:" styleClass="label" />
-                    <p:calendar id="time" required="true" requiredMessage="Obavezno izaberite datum" disabled="true" value="#{perfForm.startTime}" pattern="HH:mm a" timeOnly="true"  />
+                    <p:calendar id="time" required="true" requiredMessage="Obavezno izaberite datum" disabled="true" value="#{buyTicket.perf.startTime}" pattern="HH:mm a" timeOnly="true"  />
                 </div>
 
                 <div class="holder">
-                    <h:outputLabel for="prefix" value="Cena: " styleClass="label" />
-                    <h:outputText value="#{perfForm.data.price}" />
+                    <h:outputLabel for="price" value="Cena: " styleClass="label" />
+                    <h:outputText id="price" value="#{buyTicket.perf.price}" />
                 </div>
-
-                <h:form>
-                    <ui:remove>
-                        <p:dataGrid var="seat" value="#{perfForm.data.stage.seats}" columns="#{perfForm.data.stage.numberOfColumns}"
-                                    rows="#{perfForm.data.stage.numberOfRows}" paginator="false" id="tickets">
-
-                            <f:facet name="header">
-                                Karte
-                            </f:facet>
-
-                            <p:panel header="#{seat.row} - #{seat.column}" style="text-align:center">
-                                <h:panelGrid columns="1" style="width:100%">
-
-                                    <h:outputText value="#{seat.row} - #{seat.column}" />
-
-                                </h:panelGrid>
-                            </p:panel>
-
-                        </p:dataGrid>
-                    </ui:remove>
-                    
-              
-                    
-                    
-                    <c:set var="numCols" value="#{perfForm.data.stage.numberOfColumns}" />
-                    <c:set var="numRows" value="#{perfForm.data.stage.numberOfRows}" />
-                    <h:outputText value="#{numCols}" />
-                    
-                    <table>
-                        <tr>
-                            <th></th>
-                            <c:forEach begin="1" end="#{perfForm.data.stage.numberOfColumns}" var="i">
-                                <th>kolona #{i}</th>
-                            </c:forEach>
-                        </tr>
-                        <c:forEach items="#{perfForm.data.tickets}" var="ticket" varStatus="status" >
+                
+                </ui:remove>
+                
+                <div class="holder">
+                    <h1>Karte</h1>
+                </div>
+                
+                <h:form id="ticketsTableForm">
+                    <p:growl id="growl" showDetail="false" sticky="false" />  
+                    <div>
+                        
+                        
+                        
+                        <h:panelGroup id="ticTable" layout="block">
                             
-                            <h:outputText value="&lt;tr&gt;" escape="false" rendered="#{status.count % numCols == 1}"/>
-                            <c:if test="#{status.count % numCols == 1}">
-                                <th>red #{ticket.seat.row}.</th>
-                            </c:if>
-                            
-                            <td data-ticket="true" data-status="#{ticket.free ? 'free' : ticket.sold ? 'sold' : ticket.reserved ? 'reserved' : 'in-store'}" style="background: #{ticket.free ? 'green' : ticket.sold ? 'red' : ticket.reserved ? 'blue' : 'orange'};" title="red #{ticket.seat.row}, kol: #{ticket.seat.column}"><h:outputText value="#{ticket.free ? 'Slobodna' : ticket.sold ? 'Prodata' : ticket.reserved ? 'Rezervisana' : 'Izabrana'}" /></td>
-                            
-                            <h:outputText value="&lt;/tr&gt;" escape="false" rendered="#{status.count % numCols == 0}"/>
-                            
-                            
-                        </c:forEach>
+                        <table id="seats-table">
+                           <tr>
+                               <th></th>
+                               <ui:repeat value="#{util:createArray(buyTicket.perf.stage.numberOfColumns)}" var="a" varStatus="stat">
+                                   <th>kolona #{stat.index + 1}.</th>
+                               </ui:repeat>
 
-                    </table>
-                    
-                   
+                           </tr>
+
+                            <ui:repeat value="#{buyTicket.tickets}" id="repeatTickets" var="ticket" varStatus="status">
+
+                               <h:outputText  value="&lt;tr&gt;&lt;th&gt;red #{ticket.seat.row}.&lt;/th&gt;" escape="false" rendered="#{status.index % buyTicket.perf.stage.numberOfColumns == 0}"/>
+                               
+                               <td data-ticket="true" data-ticket-id="seat_#{ticket.seatId}"  data-status="#{ticket.free ? 'free' : ticket.sold ? 'sold' : ticket.reserved ? 'reserved' : 'in-store'}" title="red #{ticket.seat.row}, kol: #{ticket.seat.column}, id: #{ticket.id}" class="text-center #{ticket.free ? 'ticket-free' : ticket.sold ? 'ticket-sold' : ticket.reserved ? 'ticket-reserved' : 'ticket-in-store'}">
+                                   <p:commandLink value="Slobodna" rendered="#{ticket.free}" oncomplete="actionComplete('#{component.clientId}');" action="#{buyTicket.addToStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeInStore},'#{component.clientId}');" update="@form" />
+                                   <p:commandLink value="Izabrana" rendered="#{ticket.inStore}" action="#{buyTicket.removeFromStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeFree},'#{component.clientId}');"  update=":ticketsTableForm:orderList :ticketsTableForm:growl :ticketsTableForm:ticTable" />
+                                   <p:commandLink styleClass="hide" value="Blokiraj" pt:data-ticket-block="#{ticket.seatId}" action="#{buyTicket.makeUnavailable(ticket)}" update="@form" />
+                                   <h:outputText value="Prodata" rendered="#{ticket.sold}" />
+                                   
+                                   <h:outputText value="Rezervisana" rendered="#{ticket.reserved}" />
+                               </td>
+                               
+                               <h:outputText value="&lt;/tr&gt;" escape="false" rendered="#{(status.index + 1) % buyTicket.perf.stage.numberOfColumns == 0}"/>
+
+
+                           </ui:repeat>
+
+                       </table>
+                            
+                        <h:panelGroup id="orderList" layout="block" >
+                            <h:panelGroup layout="block" rendered="#{not empty buyTicket.selectedTickets and fn:length(buyTicket.selectedTickets) > 0}">
+                                <ul>
+                                <ui:repeat value="#{buyTicket.selectedTickets}" var="ticket">
+                                    <li>red: #{ticket.seat.row}, kol: #{ticket.seat.column} - <p:commandLink value="izbaci" action="#{buyTicket.removeFromStock(ticket)}" update=":ticketsTableForm:growl :ticketsTableForm:ticTable" /></li>
+                                </ui:repeat>
+                                </ul>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" rendered="#{empty buyTicket.selectedTickets or fn:length(buyTicket.selectedTickets) == 0}">
+                                <h3>Izaberite sedište</h3>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                       </h:panelGroup>
+                       </div>
                 </h:form>
+                </h:panelGroup>
+                
+                
             </ui:define>
             <ui:define name="js">
-                
+                <h:outputScript target="body" >
+                    
+                </h:outputScript>
                 <script type="text/javascript">
                     /* <![CDATA[ */
-//                    $(document).ready(function (){alert('a ovde')});
-                    window.onload = function(){
-                        alert('aaaaaa')
-//                    document.querySelectorAll('td[data-ticket]').addEventListener("click", function(e){alert('status: ' + this['data-status'])}, false);
-                    var els = document.querySelectorAll('td[data-ticket]');
-                    for (var i=0; i<els.length; i++){
-                        var elem = els[i];
-                        console.log(elem.getAttribute('data-status'));
-                        elem.addEventListener("click", function(e){alert('status: ' + this.getAttribute('data-status') + ';<br /> title: ' + this.getAttribute('title'))}, false);
+                    
+                    var wSocket;
+
+                    var okSeats = {};
+                    var onWaitSeats = {};
+                    var tableCache = document.getElementById("seats-table");
+                    
+                    function disable(e){
+                        console.log('a');
+                        e.stopPropagation();
+                        return false;
                     }
                     
+                    function actionComplete(clid){
+                        console.log('ONCOMPLETE!!! ' + clid);
+                        
                     }
+                    
+                    function initializeReception(){
+                        var host = "ws://njt-loc:8080/dost/tickets/#{buyTicket.perfId}";
+                        wSocket = new WebSocket(host);
+                        var browserSupport = ("WebSocket" in window) ? true : false;
+                        if (browserSupport){
+                            wSocket.onopen = function(){
+                                console.log(" Web Socket is connected.");
+                            };
+                            wSocket.onmessage = function(event){
+                                var received_msg = event.data;
+                                console.log("PRIMLJENA PORUKA: "+ received_msg);
+                                var msg = JSON.parse(received_msg);
+                                if (msg.addedStatus == '#{buyTicket.msgStInserted}'){
+                                    console.log('uzeti u obzir i status!!!' + msg.status);
+                                    makeSeatOk(msg.seatId);
+                                }
+                                if (msg.addedStatus == '#{buyTicket.msgStAllreadyThere}'){
+                                    console.log('NIJE UBACENO VEC JE POSTOJALO!!!!');
+                                }
+                                if (msg.addedStatus == '#{buyTicket.msgStNew}'){
+                                    
+                                   var elem = tableCache.querySelector('a[data-ticket-block="' + msg.seatId + '"]');
+                                   if (typeof elem.onclick == "function") {
+                                        elem.onclick.apply(elem);
+                                    }
+                                    console.log('NEKO DRUGI JE DODAO!');
+                                }
+                            };
+                            wSocket.onclose = function(){
+                                // websocket is closed.
+                                console.log("Connection is closed...");
+                            };
+                        }
+                        else{
+                            // Thebrowser doesn't support WebSocket
+                            alert("WebSocket is NOT supported by your Browser!");
+                        }
+                    }
+                    
+                    function websocketOpen(){
+                        initializeReception();
+                    }
+                    
+                    function websocketClose(){
+                        wSocket.close();
+                    }
+                    
+                    function makeSeatOk(seatId){
+                        console.log('makeSeatOk');
+                        var computedSeatId = 'seat_' + seatId;
+                        var componentId = onWaitSeats[computedSeatId];
+                        console.log('componentId ' + componentId);
+                        delete onWaitSeats[computedSeatId];
+                        okSeats[testSeatId] = componentId;
+                        console.log('okSeats ' + JSON.stringify(okSeats));
+                        
+                        var elem = document.getElementById(componentId);
+                        
+                        if (typeof elem.onclick == "function") {
+                            console.log('makeSeatOk CLICK!');
+                            elem.onclick.apply(elem);
+                        }
+                        
+                        elem = tableCache.querySelector('td[data-ticket-id=' + testSeatId + ']');
+                        elem.className = elem.className.replace( /(?:^|\s)loading-back(?!\S)/g , '' );
+                        
+                    }
+                    
+                    function sendMessage(seatId,status,componentId){
+                        
+                        console.log('pozvan send message');
+                        var compSeatId = 'seat_' + seatId;
+                        console.log('compSeatId: ' + compSeatId);
+                        
+                        if (!okSeats[compSeatId]){
+                            console.log('not ok');
+                            onWaitSeats[compSeatId] = componentId;
+                            testSeatId = compSeatId;
+                            console.log('ret false!');
+                            console.log('onWaitSeats: ' + JSON.stringify(onWaitSeats));
+                            
+                            var elem = tableCache.querySelector('td[data-ticket-id=' + compSeatId + ']');
+                            elem.className += ' loading-back';
+                            console.log('saljem: ' + JSON.stringify({
+                                'status': status,
+                                'seatId': seatId,
+                                'perfId': #{buyTicket.perfId}
+                                }));
+                            wSocket.send(JSON.stringify({
+                                'status': status,
+                                'seatId': seatId,
+                                'perfId': #{buyTicket.perfId}
+                                }));
+                            
+                            return false;
+                        }else{
+                            delete okSeats[compSeatId];
+                            console.log('seat ok ok');
+                            
+                            return true;
+                        }
+                        
+                        
+                    }
+                        
+                    window.onload = function(){
+                        websocketOpen();
+                    };
+                    
+                    
+                    
+                    
                     
                     /*function your_function(){
                         alert('loaded');

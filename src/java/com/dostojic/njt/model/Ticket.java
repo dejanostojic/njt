@@ -18,7 +18,7 @@ public class Ticket implements Serializable{
     private double price;
     private long userId;
     private String ownerName;
-    private int status;
+    private short status;
     
     public long getId() {
         return id;
@@ -70,11 +70,11 @@ public class Ticket implements Serializable{
         this.userId = userId;
     }
 
-    public int getStatus() {
+    public short getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(short status) {
         this.status = status;
     }
     

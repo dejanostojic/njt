@@ -510,3 +510,35 @@ body > .container {
 }
 
 /* holders end */
+
+/* loader background */
+
+.loading-back {
+    background-image: url("#{resource['dost:img/loader/ajax-loader-transp.gif']}");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.text-center{
+    text-align: center;
+}
+
+
+td.ticket-free{
+    background-color: green;
+}
+td.ticket-sold{
+    background-color: red;
+    pointer-events: none;
+}
+td.ticket-reserved{
+    background-color: grey;
+}
+td.ticket-in-store{
+    background-color: yellow;
+}
+
+.hide{
+    display: none;
+    visibility: hidden;
+}

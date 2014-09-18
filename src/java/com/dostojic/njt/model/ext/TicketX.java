@@ -45,7 +45,7 @@ public class TicketX extends Ticket{
     }
     
     public String getStatusText(){
-        return TicketStatus.getText.get(getStatus());
+        return TicketStatus.getTextStatus(getStatus());
     }
     
 }

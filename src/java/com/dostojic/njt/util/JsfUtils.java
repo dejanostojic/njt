@@ -36,6 +36,11 @@ public class JsfUtils {
         return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
     }
     
+    public static <T> T findBean(String beanName, Class<T> targetClass) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", targetClass);
+    }
+    
     public static HttpServletRequest getHttpServletReqest() {
         return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     }

@@ -16,12 +16,13 @@ import com.dostojic.njt.util.JsfUtils;
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 /**
  *
  * @author dostojic
  */
 @ManagedBean(name = PlayForm.MANAGED_BEAN_NAME)
-@SessionScoped
+@ViewScoped
 public class PlayForm extends FormBean<Play>{
 
     public static final String MANAGED_BEAN_NAME = "playForm";
@@ -34,17 +35,25 @@ public class PlayForm extends FormBean<Play>{
     
     @PostConstruct
     public void init(){
-        System.out.println("DEBUG ::: INFO ::: INIT PLAY FORM!");
+        
+        long playId = JsfUtils.getLongPar("playId");
+        
+        System.out.println("DEBUG ::: INFO ::: INIT PLAY FORM! playId: " + playId);
+        if (playId > 0){
+            load(playId);
+        }else{
+            newData();
+        }
     }
     
     @Override
     public String getFormUrl() {
-        return "/admin/play/form.xhtml";
+        return "/admin/play/form";
     }
 
     @Override
     public String getViewUrl() {
-        return "/admin/play/index.xhtml";
+        return "/admin/play/index";
     }
 
     @Override
@@ -54,7 +63,7 @@ public class PlayForm extends FormBean<Play>{
 
     @Override
     public String getListUrl() {
-        return "/admin/play/index.xhtml";
+        return "/admin/play/index";
     }
     
     

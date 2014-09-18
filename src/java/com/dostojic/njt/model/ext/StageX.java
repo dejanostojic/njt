@@ -24,7 +24,7 @@ public class StageX extends Stage{
     
     
     List<Seat> seats;
-
+    
     public StageX(Stage s){
         BeanUtils.copyProperties(this, s);
     }
@@ -55,7 +55,7 @@ public class StageX extends Stage{
         return getMax((Seat s) -> s.getRow());
     }
     
-    public int getMax(ToIntFunction<Seat> f){
+    private int getMax(ToIntFunction<Seat> f){
         return getSeats().stream().mapToInt(s -> f.applyAsInt(s)).max().getAsInt();
     }
     

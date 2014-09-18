@@ -37,7 +37,11 @@ public class PerformanceX extends Performance{
     public PerformanceX(){}
     
     public PerformanceX(Performance performance){
+        System.out.println("Copy properties!!!");
+        System.out.println("PERF ID: " + performance.getId());
         BeanUtils.copyProperties(this, performance);
+        
+        System.out.println("THIS ID: " + this.getId());
     }
     
     public PerformanceX(long id){

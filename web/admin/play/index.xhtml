@@ -25,6 +25,7 @@
                             </p:column>
                             
                             <p:column headerText="Akcije">
+                                <h:outputLink value="/admin/play/form/#{play.id}" >Izmeni Dobar</h:outputLink>
                                 <p:commandButton image="ui-icon-pencil" value="Izmeni" actionListener="#{playList.editPlay(play)}" />
                                 <p:commandButton image="ui-icon-circle-close" update="plays-table" value="Obrisi" actionListener="#{playList.deletePlay(play)}" />
                             </p:column>

@@ -11,15 +11,17 @@ import com.dostojic.njt.db.util.CommonUtils;
 import com.dostojic.njt.model.Stage;
 import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.performance.model.Performance;
-import com.dostojic.njt.performance.model.ex.PerformanceX;
 import com.dostojic.njt.play.dao.PlayDao;
 import com.dostojic.njt.play.model.Play;
 import com.dostojic.njt.util.FormBean;
 import com.dostojic.njt.util.JsfMessage;
 import com.dostojic.njt.util.JsfUtils;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 /**
@@ -27,8 +29,8 @@ import javax.faces.model.SelectItem;
  * @author dostojic
  */
 @ManagedBean(name = PerformanceForm.MANAGED_BEAN_NAME)
-@SessionScoped
-public class PerformanceForm extends FormBean<PerformanceX>{
+@ViewScoped
+public class PerformanceForm extends FormBean<Performance>{
 
     public static final String MANAGED_BEAN_NAME = "perfForm";
     
@@ -38,12 +40,12 @@ public class PerformanceForm extends FormBean<PerformanceX>{
     
     @Override
     public String getFormUrl() {
-        return "/admin/perf/form.xhtml";
+        return "/admin/perf/form";
     }
 
     @Override
     public String getViewUrl() {
-        return "/admin/perf/tickets.xhtml";
+        return "/admin/perf/form";
     }
 
     @Override
@@ -53,7 +55,21 @@ public class PerformanceForm extends FormBean<PerformanceX>{
 
     @Override
     public String getListUrl() {
-        return "/admin/perf/index.xhtml";
+        return "/admin/perf/index";
+    }
+    
+    @PostConstruct
+    public void init(){
+        long perfId = JsfUtils.getLongPar("perfId");
+        
+        
+        System.out.println("DEBUG ::: INFO ::: INIT perf FORM! perfId: " + perfId);
+        if (perfId > 0){
+            load(perfId);
+        }else{
+            newData();
+        }
+        
     }
     
     @Override
@@ -103,9 +119,15 @@ public class PerformanceForm extends FormBean<PerformanceX>{
     }
 
     @Override
-    public PerformanceX newObject() {
-        return new PerformanceX();
+    public Performance newObject() {
+        return new Performance();
     }
+
+    public void cancel(ActionEvent e) {
+        cancel();
+    }
+    
+          
     
     public SelectItem[] getPlays(){
         List<Play> list = PlayDao.getInstance().loadAll();
@@ -152,7 +174,13 @@ public class PerformanceForm extends FormBean<PerformanceX>{
 
     @Override
     public void load(long dataId) {
-        super.load(dataId); //To change body of generated methods, choose Tools | Templates.
+        setData(PerformanceDao.getInstance().loadByPk(dataId));
+        newData = false;
+    }
+
+    public void load(Performance data) {
+        setData(data);
+        newData = false;
     }
     
     public void delete(Performance performance){

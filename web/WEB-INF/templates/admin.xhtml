@@ -9,7 +9,7 @@
         <title><ui:insert name="title"/></title>
         
         <h:outputStylesheet library="dost" name="css/main.css" />
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        
         <ui:insert name="head"/>
     </h:head>
     
@@ -17,16 +17,16 @@
         <div class="container">
             <div class="header"> 
                 <div class="logo">
-                    <h:outputLink value="/index.xhtml" title="Početna"><h:graphicImage name="img/fon.jpg" alt="FON logo" library="dost"/></h:outputLink>
+                    <h:outputLink value="/index" title="Početna"><h:graphicImage name="img/fon.jpg" alt="FON logo" library="dost"/></h:outputLink>
                 </div>
             </div>
             
             <div id='cssmenu'>
                 <ul>
-                   <li class='active'><a href='/index.xhtml'>Početna</a></li>
-                   <li class='has-sub'><a href='/admin/play/index.xhtml'>Predstave</a>
+                   <li class='active'><a href='/index'>Početna</a></li>
+                   <li class='has-sub'><a href='/admin/play/index'>Predstave</a>
                       <ul>
-                         <li class='has-sub'><a href='/admin/play/index.xhtml'>Lista predstava</a>
+                         <li class='has-sub'><a href='/admin/play/index'>Lista predstava</a>
                             <ul>
                                <li><a href='#'>Sub Item</a></li>
                                <li><a href='#'>Sub Item</a></li>
@@ -40,9 +40,9 @@
                          </li>
                       </ul>
                    </li>
-                   <li class='has-sub'><a href='/admin/perf/index.xhtml'>Izvođenja</a>
+                   <li class='has-sub'><a href='/admin/perf/index'>Izvođenja</a>
                        <ul>
-                           <li><a href='/admin/perf/index.xhtml'>Lista izvođenja</a></li>
+                           <li><a href='/admin/perf/index'>Lista izvođenja</a></li>
                             <li><h:form><h:commandLink value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" /></h:form></li>
                        </ul>
                    </li>
