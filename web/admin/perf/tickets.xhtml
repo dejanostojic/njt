@@ -9,24 +9,6 @@
                         template="/WEB-INF/templates/admin.xhtml">
             
             
-            <ui:define name="head">
-                
-                <style>
-                    table{
-                        margin-left:auto; 
-                        margin-right:auto;
-                    }
-                    
-                    table, td, th {
-                        border: 1px solid #152B48;
-                    }
-
-                    th {
-                        background-color: #152B48;
-                        color: white;
-                    }
-                </style>
-            </ui:define>
             <ui:define name="title">Karte - #{buyTicket.perf.play.title}</ui:define>
             <ui:define name="stripe1">
                 <div>Filter</div>
@@ -34,44 +16,29 @@
             <ui:define name="content">
                 <h:panelGroup layout="block" rendered="#{not empty buyTicket.perf}">
                 <h1>Karte - #{buyTicket.perf.play.title}</h1>
-                <h3 id="startTest" onclick="startTest()">Start test</h3>
-                <ui:remove>
-                <h3 id="webSocketStart">Start websocket</h3>
-                <h3 id="webSocketStop">Stop websocket</h3>
-                <h3 id="makeSeatOk">makeSeatOk</h3>
-
-                <div class="holder">
-                    <label class="label">Scena</label>
-                    <h:outputText value="#{buyTicket.perf.stage.name}" />
-                </div>
-
-                <div class="holder">
-                    <label for="play" class="label">Predstava: </label>
-                    <h:outputText value="#{buyTicket.perf.play.title}" />
-                </div>
-
-                <div class="holder">
-                    <p:outputLabel for="restricted" styleClass="label" value="Datum" />
-                    <p:calendar id="restricted" value="#{buyTicket.perf.startDate}" disabled="true" requiredMessage="Datum je obavezno polje" mindate="1/9/14" style="width: 200px;"/>
-                </div>
-
-                <div class="holder">
-                    <p:outputLabel for="time" value="Time:" styleClass="label" />
-                    <p:calendar id="time" required="true" requiredMessage="Obavezno izaberite datum" disabled="true" value="#{buyTicket.perf.startTime}" pattern="HH:mm a" timeOnly="true"  />
-                </div>
-
-                <div class="holder">
-                    <h:outputLabel for="price" value="Cena: " styleClass="label" />
-                    <h:outputText id="price" value="#{buyTicket.perf.price}" />
-                </div>
+                <p>
+                    Na ovoj stranici mozete da kupite karte za određeno izvođenje. U ovom slučaju za izvođenje predstave #{buyTicket.perf.play.title} u sali: #{buyTicket.perf.stage.name}. <br/>
+                    <a href="#test" data-role="newtab" target="_blank" title="Simulira se nasumičan klik na slobodno ili izabrano sedište svakog sekunde.">Kliknite ovde da pokrenete test u novom tabu. (na url se samo doda '#test')</a><br/>
+                     ili <a href="#fill" data-role="newtab" target="_blank" title="Simulira se nasumičan klik na slobodno sedište svakog sekunda. ">Kliknite ovde da pokrenete test u novom tabu. (na url se samo doda '#fill')</a><br />
+                    
+                    Ukoliko korinik ne izabere neku kartu u roku od 5 minuta biće 'otkačen' sa servera. 
+                    Mogu se u realnom vremenu u više tabova birati karte, a promene će se slati svim klijenitma koji prate isto izvođenje.
+                </p>
+                <h3 id="startTest" onclick="startTest('#test')">Start test</h3>
+                <h3 id="stopTest" onclick="stopInterval()" class="hide">Stop test</h3>
                 
-                </ui:remove>
+                <h3 id="webSocketStart" onclick="return websocketOpen()">Start websocket</h3>
+                <h3 id="webSocketStop" onclick="return websocketClose()" class="hide">Stop websocket</h3>
+                
 
                 <h:form id="ticketsTableForm">
                     <p:growl id="growl" showDetail="false" sticky="false" />  
                         
-                        <h:panelGroup id="ticTable" layout="block">
-                            <div>
+                    <h:panelGroup id="ticTable" layout="block">
+                        <p:inputText id="ownerName" value="#{buyTicket.ownerName}"/>
+                        <h:inputHidden id="sessionInput" value="#{buyTicket.sessionId}"  />
+                        <p:commandButton actionListener="#{buyTicket.saveTickets}" onsuccess="sellAllSeats" value="Kupi karte" ajax="true" process="sessionInput ownerName" update="orderList"/>
+                        
                         <table id="seats-table">
                            <tr>
                                <th></th>
@@ -88,13 +55,6 @@
                                <td id="seat_#{ticket.seatId}" data-ticket="true" data-seat-id="#{ticket.seatId}" data-status-code="#{ticket.status}" data-col="#{ticket.seat.column}" data-row="#{ticket.seat.row}"
                                    title="red #{ticket.seat.row}, kol: #{ticket.seat.column}, status: #{ticket.statusText}" 
                                    class="text-center #{ticket.free ? 'ticket-free' : ticket.sold ? 'ticket-sold' : ticket.reserved ? 'ticket-reserved' : 'ticket-in-store'}">
-                                   <ui:remove>
-                                   <p:commandLink value=" " rendered="#{ticket.free}" pt:data-status="active" oncomplete="actionComplete('#{component.clientId}');" action="#{buyTicket.addToStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeInStore},'#{component.clientId}');" update="@form" />
-                                   <p:commandLink value="Izabrana" rendered="#{ticket.inStore}" action="#{buyTicket.removeFromStock(ticket)}" onstart="return sendMessage(#{ticket.seat.id},#{buyTicket.statusCodeFree},'#{component.clientId}');"  update=":ticketsTableForm:orderList :ticketsTableForm:growl :ticketsTableForm:ticTable" />
-                                   <p:commandLink styleClass="hide" value="Blokiraj" pt:data-ticket-block="#{ticket.seatId}" action="#{buyTicket.makeUnavailable(ticket)}" update="@form" />
-                                   <h:outputText value="Prodata" rendered="#{ticket.sold}" />
-                                   <h:outputText value="Rezervisana" rendered="#{ticket.reserved}" />
-                                   </ui:remove>
                                </td>
                                
                                <h:outputText value="&lt;/tr&gt;" escape="false" rendered="#{(status.index + 1) % buyTicket.perf.stage.numberOfColumns == 0}"/>
@@ -103,7 +63,7 @@
                            </ui:repeat>
 
                        </table>
-                            </div>
+                            
                         <h:panelGroup id="orderList" layout="block" >
                             <h:panelGroup layout="block" rendered="#{not empty buyTicket.selectedTickets and fn:length(buyTicket.selectedTickets) > 0}">
                                 <ul>
@@ -116,12 +76,10 @@
                                 <h3>Izaberite sedište</h3>
                             </h:panelGroup>
                         </h:panelGroup>
-                       </h:panelGroup>
-                       
+                    </h:panelGroup>
+                    
                 </h:form>
                 </h:panelGroup>
-                
-                
             </ui:define>
             <ui:define name="js">
                 <h:outputScript target="body" >
@@ -131,23 +89,30 @@
                     /* <![CDATA[ */
                     
                     var wSocket,
-                        okSeats = {}, 
                         onWaitSeats = {},
-                        tableCache;
-                    
-                    function actionComplete(clid){
-                        console.log('ONCOMPLETE!!! ' + clid);
+                        tableCache,
+                        intervalID;
+                        
+                    function stopInterval(){
+                        document.getElementById('stopTest').className = 'hide';
+                        document.getElementById('startTest').className = '';
+                        if (intervalID){
+                            clearInterval(intervalID);
+                        }
                     }
                     
-                    
-                    
                     function getRandomSeatId(min, max) {
-                        console.log('seat_' + (Math.floor(Math.random() * (max - min + 1)) + min));
-                        return 'seat_' + (Math.floor(Math.random() * (max - min + 1)) + min);
+                        var id = 'seat_' + getRandomNumb(min,max);
+                        console.log(id);
+                        return id;
+                    }
+                    
+                    function getRandomNumb(min, max) {
+                        return (Math.floor(Math.random() * (1 + max - min)) + min);
                     }
 
                     function initializeReception(){
-                        var host = "ws://njt-loc:8080/dost/tickets/#{buyTicket.perfId}";
+                        var host = "ws://njt-loc:9080/dost/tickets/#{buyTicket.perfId}";
                         wSocket = new WebSocket(host);
                         var browserSupport = ("WebSocket" in window) ? true : false;
                         if (browserSupport){
@@ -159,23 +124,36 @@
                                 console.log("PRIMLJENA PORUKA: "+ received_msg);
                                 var msg = JSON.parse(received_msg);
                                 if (msg.addedStatus == '#{buyTicket.msgStInserted}'){
-                                    console.log('uzeti u obzir i status!!!' + msg.status);
                                     makeSeatOk(msg.seatId);
-                                }
-                                if (msg.addedStatus == '#{buyTicket.msgStAllreadyThere}'){
+                                } else if (msg.addedStatus == '#{buyTicket.msgStAllreadyThere}'){
                                     makeSeatReserved(msg.seatId);
                                     console.log('NIJE USPELO DODAVANJE!');
-                                }
-                                if (msg.addedStatus == '#{buyTicket.msgStNew}'){
+                                } else if (msg.addedStatus == '#{buyTicket.msgStNew}'){
                                     makeSeatReserved(msg.seatId);
-                                    
                                     console.log('NEKO DRUGI JE DODAO!');
+                                } else if (msg.addedStatus == '#{buyTicket.msgStFreed}'){
+                                    freeSeet(msg.seatId);
+                                    console.log('Oslobodjeno!');
+                                } else if (msg.addedStatus == '#{buyTicket.msgStOnOpen}' || msg.addedStatus == '#{buyTicket.msgStOnClose}' || msg.addedStatus == '#{buyTicket.msgStBought}'){
+                                    setInitState(msg);
                                 }
                             };
-                            wSocket.onclose = function(){
+                            wSocket.onclose = function(event){
                                 // websocket is closed.
                                 console.log("Connection is closed...");
+                                console.log("wasClean: " + event.wasClean);
+                                console.log("code: " + event.code);
+                                console.log("reason:" + event.reason);
+                                if (event.code == 1001){
+                                    alert('Konekcija sa serverom izgubljena. Osvežite stranicu!')
+                                }
+                                
                             };
+                            wSocket.onerror = function(error) {
+                                console.log('WebSocket Error: ' + error);
+                            };
+                            window.addEventListener ("onbeforeunload", websocketClose, false);
+                            window.addEventListener ("onunload", websocketClose, false);
                         }
                         else{
                             // Thebrowser doesn't support WebSocket
@@ -184,72 +162,85 @@
                     }
                     
                     function websocketOpen(){
+                        document.getElementById('webSocketStart').className = 'hide';
+                        document.getElementById('webSocketStop').className = '';
                         initializeReception();
                     }
                     
                     function websocketClose(){
-                        wSocket.close();
+                        try{
+                            document.getElementById('webSocketStart').className = '';
+                            document.getElementById('webSocketStop').className = 'hide';
+                            wSocket.close();
+                        }catch(e){
+                            console.log(e);
+                        }
                     }
-                    /*
-                    function makeSeatOk(seatId){
-                        console.log('makeSeatOk');
-                        var computedSeatId = 'seat_' + seatId;
-                        var componentId = onWaitSeats[computedSeatId];
-                        console.log('componentId ' + componentId);
-                        delete onWaitSeats[computedSeatId];
-                        okSeats[testSeatId] = componentId;
-                        console.log('okSeats ' + JSON.stringify(okSeats));
+                    
+                    function setInitState(msg){
+                        var seatList = msg.list,
+                            onBought = msg.addedStatus === '#{buyTicket.msgStBought}',
+                            onOpen = msg.addedStatus === '#{buyTicket.msgStOnOpen}',
+                            onClose = msg.addedStatus === '#{buyTicket.msgStOnClose}';
                         
-                        var elem = document.getElementById(componentId);
+                        if (onOpen){
+                            document.getElementById('ticketsTableForm:sessionInput').value = msg.sessionId;
+                        }
+                        if (seatList){
+                            for (var i=0; i<seatList.length; i++){
+                                var seatId = seatList[i];
+                                if (seatId > 0){
+                                    try{
+                                        var elem = document.getElementById('seat_'+seatId);
+                                        if (onOpen){
+                                            styleSeetReserved(elem);
+                                        }else if (onClose){
+                                            styleSeetFree(elem);
+                                        }else if (onBought){
+                                            styleSeetSold(elem);
+                                        }
+                                    }catch(e){
+                                        console.log(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                    function styleSeetReserved(seat){
+                        seat.setAttribute('data-status-code','#{buyTicket.statusCodeReserved}');
+                        seat.className = 'ticket-reserved';
+                        seat.title='red ' + seat.getAttribute('data-row') + ', kol: ' + seat.getAttribute('data-col') + ', status: Rezervisana'; 
+                    }
+                    
+                    function styleSeetFree(seat){
+                        seat.setAttribute('data-status-code','#{buyTicket.statusCodeFree}');
+                        seat.className = 'ticket-free';
+                        seat.title='red ' + seat.getAttribute('data-row') + ', kol: ' + seat.getAttribute('data-col') + ', status: Slobodna'; 
+                    }
+                    
+                    
+                    function freeSeet(seatId){
+                        styleSeetFree( document.getElementById('seat_'+seatId) );
                         
-                        if (typeof elem.onclick == "function") {
-                            console.log('makeSeatOk CLICK!');
-                            elem.onclick.apply(elem);
+                    }
+                    
+                    function styleSeetSold(seat){
+                        seat.setAttribute('data-status-code','#{buyTicket.statusCodeSold}');
+                        seat.className = 'ticket-sold';
+                        seat.title='red ' + elem.getAttribute('data-row') + ', kol: ' + elem.getAttribute('data-col') + ', status: Prodana'; 
+                    }
+                    
+                    function sellAllSeats(){
+                        console.log('sell all seats');
+                        var seats = tableCache.querySelectorAll(tableCache.querySelectorAll('td[data-status-code="#{buyTicket.statusCodeInStore}"]'));
+                        for (var i=0; i<seats.length; i++){
+                            styleSeetSold(seats[i]);
                         }
                         
-                        elem = tableCache.querySelector('td[data-ticket-id=' + testSeatId + ']');
-                        elem.className = elem.className.replace( /(?:^|\s)loading-back(?!\S)/g , '' );
-                        
                     }
-                
-                    function sendMessage(seatId,status,componentId){
-                        
-                        console.log('pozvan send message');
-                        var compSeatId = 'seat_' + seatId;
-                        console.log('compSeatId: ' + compSeatId);
-                        
-                        if (!okSeats[compSeatId]){
-                            console.log('not ok');
-                            onWaitSeats[compSeatId] = componentId;
-                            testSeatId = compSeatId;
-                            console.log('ret false!');
-                            console.log('onWaitSeats: ' + JSON.stringify(onWaitSeats));
-                            
-                            var elem = tableCache.querySelector('td[data-ticket-id=' + compSeatId + ']');
-                            elem.className += ' loading-back';
-                            console.log('saljem: ' + JSON.stringify({
-                                'status': status,
-                                'seatId': seatId,
-                                'perfId': #{buyTicket.perfId}
-                                }));
-                            wSocket.send(JSON.stringify({
-                                'status': status,
-                                'seatId': seatId,
-                                'perfId': #{buyTicket.perfId}
-                                }));
-                            
-                            return false;
-                        }else{
-                            delete okSeats[compSeatId];
-                            console.log('seat ok ok');
-                            
-                            return true;
-                        }
-                        
-                        
-                    }
-                    */
-                       
+
                     function makeSeatReserved(seatId){
                         var elem = document.getElementById('seat_'+seatId);
                         elem.setAttribute('data-status-code','#{buyTicket.statusCodeReserved}');
@@ -264,9 +255,6 @@
                         var elem = onWaitSeats[computedSeatId];
                         
                         delete onWaitSeats[computedSeatId];
-                        okSeats[computedSeatId] = elem;
-                        
-                        console.log('okSeats ' + JSON.stringify(okSeats));
                         
                         elem.setAttribute('data-status-code','#{buyTicket.statusCodeInStore}');
                         
@@ -274,89 +262,100 @@
                         elem.title='red ' + elem.getAttribute('data-row') + ', kol: ' + elem.getAttribute('data-col') + ', status: Izabrana'; 
                         
                     }
-                    
-                    function handleSeatClick(elemSeatId){
-                        console.log('pozvan send message');
-                        
-                        console.log('compSeatId: ' + elemSeatId);
-                        var seat = document.getElementById(elemSeatId);
-                        if (!okSeats[elemSeatId]){
+
+                    function handleSeatClick(seat){
+                        var statusCode = seat.getAttribute('data-status-code');
+                        if ((statusCode === '#{buyTicket.statusCodeFree}' || statusCode === '#{buyTicket.statusCodeInStore}') && wSocket && wSocket.readyState === WebSocket.OPEN){
                             
-                            onWaitSeats[elemSeatId] = seat;
-                            
-                            console.log('onWaitSeats: ' + JSON.stringify(onWaitSeats));
+                            console.log('pozvan send message');
+                            console.log('compSeatId: ' + seat.id);
+
+                            onWaitSeats[seat.id] = seat;
 
                             seat.className += ' loading-back';
-                            console.log('stat code: '+seat.getAttribute('data-status-code'));
-                            console.log('data-seat-id:  '+seat.getAttribute('data-seat-id'));
-                            console.log('saljem: ' + JSON.stringify({
+                           /* console.log('saljem: ' + JSON.stringify({
                                 'status': seat.getAttribute('data-status-code'),
                                 'seatId': seat.getAttribute('data-seat-id'),
                                 'perfId': #{buyTicket.perfId}
                                 }));
+                            */
                             wSocket.send(JSON.stringify({
                                 'status': seat.getAttribute('data-status-code'),
                                 'seatId': seat.getAttribute('data-seat-id'),
                                 'perfId': #{buyTicket.perfId}
-                                }));
+                            }));
                             
-                            return false;
-                        }else{
-                            delete okSeats[elemSeatId];
-                            console.log('seat ok ok');
-                            
-                            return true;
                         }
                     }
-    
+                    
                     function dataTicketClick(e){
-                        handleSeatClick(this.id);
+                            handleSeatClick(this);
+                    }
+                    
+                    function buyTicketsInform(){
+                        wSocket.send(JSON.stringify({'perfId': #{buyTicket.perfId}, 'status':'#{buyTicket.statusCodeSold}'}));
                     }
                     
                     
-                    
-                    window.onload = function(){
-                        tableCache = document.getElementById("seats-table");
-                        websocketOpen();
-                        var elems = tableCache.querySelectorAll('td[data-ticket="true"]');
-                        
-                        for(var i=0; i<elems.length; i++ ){
-                            console.log('elem: ' + elems[i].title);
-                            elems[i].addEventListener('click', dataTicketClick,false);
-                        }
-                        
-                        
-                        
-                        
-                        /*
-                        var els = document.querySelectorAll('td[data-ticket]');
-                    for (var i=0; i<els.length; i++){
-                        var elem = els[i];
-                        console.log(elem.getAttribute('data-status'));
-                        elem.addEventListener("click", function(e){alert('status: ' + this.getAttribute('data-status') + ';<br /> title: ' + this.getAttribute('title'))}, false);
-                        */
-                    };
-                    
-                    
-                    
-                    function startTest(){
-                            setInterval(randomClick, 2000);
-                        }
+                    function waitForSocketConnection(socket, callback){
+                        setTimeout(function () {
+                                    if (socket.readyState === 1) {
+                                        console.log("Connection is made")
+                                        if(callback != null){
+                                            callback();
+                                        }
+                                        return;
 
-                        function randomClick(){
-                            
-                            handleSeatClick(getRandomSeatId(0,300));
-//                            handleSeatClick(getRandomSeatId(301,396));
-                        }
-                    
-                    /*function your_function(){
-                        alert('loaded');
+                                    } else {
+                                        console.log("wait for connection...")
+                                        waitForSocketConnection(socket, callback);
+                                    }
+
+                                }, 5);
                     }
-                    if (window.attachEvent) {window.attachEvent('onload', your_function);}
-                    else if (window.addEventListener) {window.addEventListener('load', your_function, false);}
-                    else {document.addEventListener('load', your_function, false);}*/
-    
-    
+
+                    
+                    $(document).ready(function(){
+                        
+                        setTimeout(function(){
+                            tableCache = document.getElementById("seats-table");
+                            websocketOpen();
+                            var seats = tableCache.querySelectorAll('td[data-ticket="true"]');
+                            console.log('seats size: ' + seats.length);
+
+                            for(var i=0; i<seats.length; i++ ){
+                                seats[i].addEventListener('click', dataTicketClick,false);
+                            }
+
+                            if (document.location.hash === '#test' || document.location.hash === '#fill'){
+                                startTest(document.location.hash, true);
+                            }
+                        },5000);
+                        
+                    }, false);
+                    
+                    function startTest(testKind, stop){
+                        document.getElementById('stopTest').className = '';
+                        document.getElementById('startTest').className = 'hide';
+                        
+                        intervalID = setInterval(randomClick, 1000, testKind);
+                        
+                    }
+
+                    function randomClick(testKind){
+                        var seats;
+                        if ('#test' === testKind){
+                            seats = tableCache.querySelectorAll('td[data-status-code="#{buyTicket.statusCodeFree}"],td[data-status-code="#{buyTicket.statusCodeInStore}"]');
+                        }else if ('#fill' === testKind){
+                            seats = tableCache.querySelectorAll('td[data-status-code="#{buyTicket.statusCodeFree}"]');
+                        }
+                        console.log('seats size3: ' + seats.length);
+                        var length = seats.length;
+                        if (length > 0){
+                            var rand = getRandomNumb(0, length -1);
+                            handleSeatClick(seats[rand]);
+                        }
+                    }
                      /* ]]> */
                 </script>
             </ui:define>

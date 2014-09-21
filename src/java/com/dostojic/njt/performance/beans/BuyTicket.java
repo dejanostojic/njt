@@ -6,15 +6,19 @@
 
 package com.dostojic.njt.performance.beans;
 
+import com.dostojic.njt.db.dao.TicketDao;
 import com.dostojic.njt.model.TicketStatus;
 import com.dostojic.njt.model.ext.TicketX;
+import com.dostojic.njt.performance.logic.websockets.TicketsEndpoint;
 import com.dostojic.njt.performance.logic.websockets.encdec.TicketMessage;
 import com.dostojic.njt.performance.model.ex.PerformanceX;
 import com.dostojic.njt.util.JsfMessage;
 import com.dostojic.njt.util.JsfUtils;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -33,6 +37,8 @@ public class BuyTicket implements java.io.Serializable{
     private List<TicketX> tickets;
     private PerformanceX perf;
     private long perfId;
+    private String sessionId;
+    private String ownerName;
 
     
     @PostConstruct
@@ -60,8 +66,22 @@ public class BuyTicket implements java.io.Serializable{
     public long getPerfId() {
         return perfId;
     }
-    
-    
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
     
     public List<TicketX> getSelectedTickets() {
         return selectedTickets;
@@ -121,6 +141,26 @@ public class BuyTicket implements java.io.Serializable{
         return tickets;
     }
     
+    public void saveTickets(){
+        
+        Set<Long> seatIds = TicketsEndpoint.getTicketsForSession(perfId, sessionId);
+        selectedTickets = new ArrayList<>(seatIds.size());
+        
+        for (TicketX t : getTickets()){
+            if (seatIds.contains(t.getSeatId())){
+                t.setOwnerName(ownerName);
+                t.setPrice(perf.getPrice());
+                t.setStatus(TicketStatus.STATUS_SOLD);
+                selectedTickets.add(t);
+            }
+        }
+        
+        TicketDao.getInstance().insertAll(selectedTickets);
+        TicketsEndpoint.informTicketsSold(perfId, sessionId);
+        
+        System.out.println("DEBUGG ::: INFO ::: FINISHED inserting tickets");
+    }
+    
     public short getStatusCodeFree(){
         return TicketStatus.STATUS_FREE;
     }
@@ -145,8 +185,24 @@ public class BuyTicket implements java.io.Serializable{
         return TicketMessage.Status.New.name();
     }
     
+    public String getMsgStFreed(){
+        return TicketMessage.Status.Freed.name();
+    }
+    
+    public String getMsgStBought(){
+        return TicketMessage.Status.Bought.name();
+    }
+    
     public String getMsgStInserted(){
         return TicketMessage.Status.Inserted.name();
+    }
+    
+    public String getMsgStOnOpen(){
+        return TicketMessage.Status.OnOpen.name();
+    }
+    
+    public String getMsgStOnClose(){
+        return TicketMessage.Status.OnClose.name();
     }
     
     public boolean showFreeTicket(long seatId){

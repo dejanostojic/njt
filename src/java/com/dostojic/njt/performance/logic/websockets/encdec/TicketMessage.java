@@ -14,7 +14,11 @@ public class TicketMessage {
     public enum Status{
         Inserted,
         AllreadyThere,
-        New;
+        New,
+        Freed,
+        Bought,
+        OnOpen,
+        OnClose;
     }
     
     private long perfId;

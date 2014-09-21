@@ -7,6 +7,7 @@
 package com.dostojic.njt.play.beans;
 
 import com.dostojic.njt.db.util.CommonUtils;
+import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.play.dao.PlayDao;
 import com.dostojic.njt.play.model.Play;
 import com.dostojic.njt.util.FormBean;
@@ -14,6 +15,7 @@ import com.dostojic.njt.util.JsfMessage;
 import javax.faces.bean.ManagedBean;
 import com.dostojic.njt.util.JsfUtils;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
@@ -128,7 +130,13 @@ public class PlayForm extends FormBean<Play>{
     }
 
     public void deletePlay(long playId){
-        PlayDao.getInstance().deleteByPk(playId);
+        int count = PerformanceDao.getInstance().count("where play_id="+playId);
+        if (count > 0){
+            JsfMessage.error("Postoje izvodjenja za ovu predstavu. Možete obrisati predstave samo koje nemaju izvođenja.");
+        }else{
+            JsfMessage.error("Možete obrisati.");
+//            PlayDao.getInstance().deleteByPk(playId);
+        }
     }
 
     @Override

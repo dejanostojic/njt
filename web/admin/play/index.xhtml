@@ -13,8 +13,9 @@
             <ui:define name="content">
                 <div>
                     <h1>Lista predstava</h1>
-                    <p:commandButton value="Nova predstava" id="withIcon" actionListener="#{playList.newPlay}" icon="ui-icon-new" />
-                    <h:form>
+                    <h:outputLink  id="withIcon" value="/admin/play/form" >Nova predstava</h:outputLink>
+                    <h:form id="listPlays">
+                        <h:messages id="mess"/>
                         <p:dataTable id="plays-table" var="play" value="#{playList.list}">
                             <p:column headerText="naziv">
                                 <h:outputText value="#{play.title}" />
@@ -25,12 +26,18 @@
                             </p:column>
                             
                             <p:column headerText="Akcije">
-                                <h:outputLink value="/admin/play/form/#{play.id}" >Izmeni Dobar</h:outputLink>
-                                <p:commandButton image="ui-icon-pencil" value="Izmeni" actionListener="#{playList.editPlay(play)}" />
-                                <p:commandButton image="ui-icon-circle-close" update="plays-table" value="Obrisi" actionListener="#{playList.deletePlay(play)}" />
+                                <h:outputLink value="/admin/play/form/#{play.id}" >Izmeni</h:outputLink>
+                                <p:commandButton icon="ui-icon-circle-close" update=":listPlays:plays-table :listPlays:mess" value="Obrisi" actionListener="#{playList.deletePlay(play)}" ajax="true">
+                                    <p:confirm header="Brisanje" message="Da li ste sigurni da želite da obrišete #{play.title}?" icon="ui-icon-alert" />
+                                </p:commandButton>
                             </p:column>
                             
                         </p:dataTable>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <p:commandButton value="Da" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Ne" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </h:form>
                 </div>
 

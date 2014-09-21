@@ -8,8 +8,10 @@ package com.dostojic.njt.play.beans;
 
 import com.dostojic.njt.db.dao.PlayDao;
 import com.dostojic.njt.db.util.PaginationHelper;
+import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.play.model.Play;
 import com.dostojic.njt.util.BaseListFilter;
+import com.dostojic.njt.util.JsfMessage;
 import com.dostojic.njt.util.JsfUtils;
 import javax.faces.event.ActionEvent;
 import java.util.List;
@@ -65,7 +67,12 @@ public class PlayList implements java.io.Serializable{
     }
     
     public void deletePlay(Play p){
-        PlayForm.getInstance().deletePlay(p.getId());
+        int count = PerformanceDao.getInstance().count("play_id="+p.getId());
+        if (count > 0){
+            JsfMessage.error("Postoje izvodjenja za ovu predstavu (" + p.getTitle() + "). Možete obrisati predstave samo koje nemaju izvođenja.");
+        }else{
+            PlayDao.getInstance().deleteByPk(p.getId());
+        }
     }
     
     

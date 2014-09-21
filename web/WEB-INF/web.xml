@@ -24,11 +24,12 @@
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/functions.taglib.xml</param-value>
     </context-param>
+    <!--
     <context-param>
        <param-name>org.ocpsoft.rewrite.config.CONFIG_RELOADING</param-name>
        <param-value>true</param-value>
     </context-param>
-
+    -->
 
     <listener>
         <listener-class>org.ocpsoft.rewrite.servlet.impl.RewriteServletRequestListener</listener-class>

@@ -38,7 +38,9 @@
                     <h:panelGroup rendererType="block" style="margin-top: 10px">
                         <p:commandButton value="Sačuvaj" action="#{playForm.save}" update="p-messages p-messages-2 messageTitle messageAbout" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="true"/>
                     </h:panelGroup>
-
+                    <div style="margin-top: 10px">
+                        <h:outputLink value="#{playForm.listUrl}">Lista predstava</h:outputLink>
+                    </div>
                     <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">
                         <p:messages id="p-messages-2"/>
                     </p:dialog>

@@ -4,8 +4,10 @@
  */
 package com.dostojic.njt.db.dao;
 
+import com.dostojic.njt.db.Database;
 import com.dostojic.njt.model.Ticket;
 import com.dostojic.njt.model.ext.TicketX;
+import com.dostojic.njt.util.WrappedException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -129,5 +131,19 @@ public class TicketDao extends GenericDao<Ticket>{
         return loadList("performance_id="+perfId, "", TicketX.class);
     }
     
-    
+    public boolean insertAll(List<? extends Ticket> list){
+        Database.getCurrent().beginTransaction();
+        try{
+            for (Ticket t: list){
+                insert(t);
+            }
+            Database.getCurrent().commit();
+            return true;
+        }catch(WrappedException ex){
+            Database.getCurrent().rollback();
+            return false;
+        }
+        
+    }
+
 }

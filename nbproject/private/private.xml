@@ -23,11 +23,13 @@
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/rewrite/ApplicationConfigurationProvider.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/form.xhtml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/resources/dost/css/main.css</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/model/ex/PerformanceX.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/nbproject/project.properties</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/beans/PlayForm.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/FormBean.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/GenericDao.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketEncoder.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/util/QueryUtils.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/index.xhtml</file>
         </group>
     </open-files>

@@ -9,6 +9,7 @@
         <title><ui:insert name="title"/></title>
         
         <h:outputStylesheet library="dost" name="css/main.css" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js"/>
         
         <ui:insert name="head"/>
     </h:head>
@@ -27,10 +28,13 @@
                    <li class='has-sub'><a href='/admin/play/index'>Predstave</a>
                       <ul>
                          <li class='has-sub'><a href='/admin/play/index'>Lista predstava</a>
-                            <ul>
-                               <li><a href='#'>Sub Item</a></li>
-                               <li><a href='#'>Sub Item</a></li>
+                             <ui:fragment rendered="#{not empty playList.list}">
+                             <ul>
+                                <ui:repeat var="play" value="#{playList.list}">
+                                    <li><a href='/admin/play/form/#{play.id}'>#{play.title}</a></li>
+                                </ui:repeat>
                             </ul>
+                            </ui:fragment>
                          </li>
                           <li class='has-sub'><h:form><h:commandLink value="Nova predstava" id="withIcon" actionListener="#{playList.newPlay}" /></h:form>
                             <ul>
