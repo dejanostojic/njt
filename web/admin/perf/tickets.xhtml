@@ -17,13 +17,22 @@
                 <h:panelGroup layout="block" rendered="#{not empty buyTicket.perf}">
                 <h1>Karte - #{buyTicket.perf.play.title}</h1>
                 <p>
-                    Na ovoj stranici mozete da kupite karte za određeno izvođenje. U ovom slučaju za izvođenje predstave #{buyTicket.perf.play.title} u sali: #{buyTicket.perf.stage.name}. <br/>
+                    Na ovoj stranici mozete da birate karte za određeno izvođenje. U ovom slučaju za izvođenje predstave #{buyTicket.perf.play.title} u sali: #{buyTicket.perf.stage.name}. <br/>
                     <a href="#test" data-role="newtab" target="_blank" title="Simulira se nasumičan klik na slobodno ili izabrano sedište svakog sekunde.">Kliknite ovde da pokrenete test u novom tabu. (na url se samo doda '#test')</a><br/>
                      ili <a href="#fill" data-role="newtab" target="_blank" title="Simulira se nasumičan klik na slobodno sedište svakog sekunda. ">Kliknite ovde da pokrenete test u novom tabu. (na url se samo doda '#fill')</a><br />
                     
-                    Ukoliko korinik ne izabere neku kartu u roku od 5 minuta biće 'otkačen' sa servera. 
+                    Ukoliko korinik ne izabere neku kartu u roku od 5 minuta biće 'otkačen' sa servera (i obavešten o tome). 
                     Mogu se u realnom vremenu u više tabova birati karte, a promene će se slati svim klijenitma koji prate isto izvođenje.
                 </p>
+                <h3>Tehnologije:</h3>
+                <ul>
+                    <li>Implementirano pomoću WebSocket protokola.</li>
+                    <li>Aplikativni server Apache Tomcat 7.0.53 (probao sam i sa Apache Tomcat 8.0.12 ali je mnogo lošije radilo)</li>
+                    <li>Java 8</li>
+                    <li>Java Server Faces 2.2.4 MVC framework sa Facelets (.xhtml) rendering tehnologijom (korišćena <a href="http://ocpsoft.org/rewrite/" target="_blank">Ocpsoft rewrite</a> ekstenzija za sakrivanje ekstenzije '.xhtml' i ulepšavanje URL-a)</li>
+                </ul>
+                    
+                
                 <h3 id="startTest" onclick="startTest('#test')">Start test</h3>
                 <h3 id="stopTest" onclick="stopInterval()" class="hide">Stop test</h3>
                 
@@ -112,7 +121,7 @@
                     }
 
                     function initializeReception(){
-                        var host = "ws://njt-loc:9080/dost/tickets/#{buyTicket.perfId}";
+                        var host = "ws://#{request.serverName}:#{request.serverPort}/dost/tickets/#{buyTicket.perfId}";
                         wSocket = new WebSocket(host);
                         var browserSupport = ("WebSocket" in window) ? true : false;
                         if (browserSupport){
@@ -296,28 +305,8 @@
                         wSocket.send(JSON.stringify({'perfId': #{buyTicket.perfId}, 'status':'#{buyTicket.statusCodeSold}'}));
                     }
                     
-                    
-                    function waitForSocketConnection(socket, callback){
-                        setTimeout(function () {
-                                    if (socket.readyState === 1) {
-                                        console.log("Connection is made")
-                                        if(callback != null){
-                                            callback();
-                                        }
-                                        return;
-
-                                    } else {
-                                        console.log("wait for connection...")
-                                        waitForSocketConnection(socket, callback);
-                                    }
-
-                                }, 5);
-                    }
-
-                    
                     $(document).ready(function(){
                         
-                        setTimeout(function(){
                             tableCache = document.getElementById("seats-table");
                             websocketOpen();
                             var seats = tableCache.querySelectorAll('td[data-ticket="true"]');
@@ -328,13 +317,12 @@
                             }
 
                             if (document.location.hash === '#test' || document.location.hash === '#fill'){
-                                startTest(document.location.hash, true);
+                                startTest(document.location.hash);
                             }
-                        },5000);
                         
-                    }, false);
+                    });
                     
-                    function startTest(testKind, stop){
+                    function startTest(testKind){
                         document.getElementById('stopTest').className = '';
                         document.getElementById('startTest').className = 'hide';
                         
@@ -349,7 +337,7 @@
                         }else if ('#fill' === testKind){
                             seats = tableCache.querySelectorAll('td[data-status-code="#{buyTicket.statusCodeFree}"]');
                         }
-                        console.log('seats size3: ' + seats.length);
+                        
                         var length = seats.length;
                         if (length > 0){
                             var rand = getRandomNumb(0, length -1);
