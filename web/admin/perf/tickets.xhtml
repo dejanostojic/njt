@@ -121,7 +121,7 @@
                     }
 
                     function initializeReception(){
-                        var host = "ws://#{request.serverName}:#{request.serverPort}/dost/tickets/#{buyTicket.perfId}";
+                        var host = "ws://#{request.serverName}:#{request.serverPort == 80 ? '8000' : request.serverPort}/dost/tickets/#{buyTicket.perfId}";
                         wSocket = new WebSocket(host);
                         var browserSupport = ("WebSocket" in window) ? true : false;
                         if (browserSupport){
