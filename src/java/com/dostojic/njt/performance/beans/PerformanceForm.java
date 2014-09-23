@@ -83,12 +83,13 @@ public class PerformanceForm extends FormBean<Performance>{
         if (newData){
             PerformanceDao.getInstance().insert(data);
             JsfMessage.info("Uspešno sačuvano izvođenje");
+            newData = false;
         }else{
             PerformanceDao.getInstance().update(data);
             JsfMessage.info("Uspešno izmenjeno izvođenje");
         }
     }
-
+    
     
     private boolean validate(Performance data){
         boolean validated = true;
@@ -175,12 +176,16 @@ public class PerformanceForm extends FormBean<Performance>{
     @Override
     public void load(long dataId) {
         setData(PerformanceDao.getInstance().loadByPk(dataId));
-        newData = false;
+        if (getData() != null){
+            newData = false;
+        }
     }
 
     public void load(Performance data) {
         setData(data);
-        newData = false;
+        if (getData() != null){
+            newData = false;
+        }
     }
     
     public void delete(Performance performance){

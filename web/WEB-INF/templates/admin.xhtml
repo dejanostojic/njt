@@ -16,14 +16,16 @@
     
     <h:body>
         <div class="container">
-            <div class="header"> 
-                <div class="logo">
-                    <h:outputLink value="/index" title="Početna"><h:graphicImage name="img/fon.jpg" alt="FON logo" library="dost"/></h:outputLink>
+            <div id="logoHeader" class="header"> 
+                <div class="logo" >
+                    <h:outputLink value="/index" title="Početna"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink>
                 </div>
             </div>
             
-            <div id='cssmenu'>
+            <div id='cssmenu' class="">
+                
                 <ul>
+                    <li id="logoList" style="display: none; visibility: hidden;"><h:outputLink value="/index" title="Početna" style="background-color: #fff; padding: 2px !important;"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink></li>
                    <li class='active'><a href='/index'>Početna</a></li>
                    <li class='has-sub'><a href='/admin/play/index'>Predstave</a>
                       <ul>
@@ -36,18 +38,13 @@
                             </ul>
                             </ui:fragment>
                          </li>
-                          <li class='has-sub'><h:form><h:commandLink value="Nova predstava" id="withIcon" actionListener="#{playList.newPlay}" /></h:form>
-                            <ul>
-                               <li><a href='#'>Sub Item</a></li>
-                               <li><a href='#'>Sub Item</a></li>
-                            </ul>
-                         </li>
+                          <li><a href='/admin/play/form/'>Nova predstava</a></li>
                       </ul>
                    </li>
                    <li class='has-sub'><a href='/admin/perf/index'>Izvođenja</a>
                        <ul>
-                           <li><a href='/admin/perf/index'>Lista izvođenja</a></li>
-                            <li><h:form><h:commandLink value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" /></h:form></li>
+                            <li><a href='/admin/perf/index'>Lista izvođenja</a></li>
+                            <li><a href='/admin/perf/form/'>Novo izvođenje</a></li>
                        </ul>
                    </li>
                    <li><a href='#'>Contact</a></li>
@@ -72,7 +69,40 @@
         <div class="footer">NJT - dostojic</div>
         <ui:insert name="js"/>      
         <script type="text/javascript">
-//            $(document).ready(function (){alert('konacno1')});
+            /* <![CDATA[ */
+        var menuManipulation = {
+            menuElem : document.getElementById('cssmenu'),
+            headerElem : document.getElementById('logoHeader'),
+            logoListElem : document.getElementById('logoList'),
+            menuFixed : false
+        };
+        function perfHideElem(elem){
+            elem.style='display: none; visibility: hidden;';
+        }
+        function perfShowElem(elem){
+            elem.style='display: block important!;';
+        }
+        function scrollHandler(){
+            var scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            if (!menuManipulation.menuFixed && scroll > 46){
+                console.log('if');
+                menuManipulation.menuFixed = true;
+                perfHideElem(menuManipulation.headerElem);
+                perfShowElem(menuManipulation.logoListElem);
+                menuManipulation.menuElem.className = 'fixed';
+            }else if (menuManipulation.menuFixed && scroll === 0){
+                menuManipulation.menuFixed = false;
+                perfHideElem(menuManipulation.logoListElem);
+                perfShowElem(menuManipulation.headerElem);
+                menuManipulation.menuElem.className = '';
+            }
+        }
+        
+        (function(){
+            window.onscroll = scrollHandler;
+        }());
+        
+        /* ]]> */
         </script>
     </h:body>
     

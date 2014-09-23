@@ -12,9 +12,8 @@
                 <div>Filter</div>
             </ui:define>
             <ui:define name="content">
-                <h:panelGroup rendererType="block" rendered="#{not empty perfForm.data}">
-                    <h1>Ne postoji izvođenje sa traženim identifikatorom.</h1>
-                    <p><h:outputLink value="#{perfForm.backUrl}"></h:outputLink></p>
+                <h:panelGroup rendererType="block" rendered="#{empty perfForm.data}">
+                    <h3 class="errorRed">Ne postoji izvođenje sa traženim identifikatorom.<p:button href="#{perfForm.listUrl}" value="Idite na listu izvođenja" styleClass="errorRed" /></h3>
                 </h:panelGroup>
                 <h:panelGroup rendererType="block" rendered="#{not empty perfForm.data}">
 
@@ -59,11 +58,14 @@
                         </div>
 
                         <div style="margin-top: 10px">
-                            <p:commandButton value="Sačuvaj" action="#{perfForm.save}" update="p-messages p-messages-2" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="false"/>
+                            <p:commandButton value="Sačuvaj" action="#{perfForm.save}" icon="ui-icon-disk" ajax="false"/>
+                            <p:commandButton value="Sačuvaj i otvori novu" action="#{perfForm.saveAndNew}" icon="ui-icon-disk" ajax="false"/>
+                            <p:commandButton value="Sačuvaj i zadvori" action="#{perfForm.saveAndClose}" icon="ui-icon-disk" ajax="false"/>
+                            <p:button value="Vrati se na listu izvođenja"  href="#{perfForm.listUrl}"/>
                         </div>
 
                         <div style="margin-top: 10px">
-                            <h:outputLink value="#{perfForm.listUrl}">Lista izvodjenja</h:outputLink>
+                            
                         </div>
 
                         <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">

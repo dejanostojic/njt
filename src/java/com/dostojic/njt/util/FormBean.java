@@ -73,8 +73,18 @@ public abstract class FormBean <T> implements java.io.Serializable {
     public abstract void newData();
     public abstract T newObject();
     
+    public void saveAndNew(){
+        save();
+        neww();
+    }
+    
+    public void saveAndClose(){
+        save();
+        JsfUtils.navigateRedirect(getListUrl());
+    }
     public void cancel(){
         goBack();
+        JsfUtils.navigateRedirect(getListUrl());
     }
     
     public void load(long dataId) {
@@ -86,8 +96,8 @@ public abstract class FormBean <T> implements java.io.Serializable {
     }
     
     public void neww() {
-            data = newObject();
-            newData = true;
-            setBackUrl(getListUrl());
+        data = newObject();
+        newData = true;
+        setBackUrl(getListUrl());
     }
 }

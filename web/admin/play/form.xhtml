@@ -8,19 +8,21 @@
 
     <body>
         <ui:composition template="/WEB-INF/templates/admin.xhtml">
+            <ui:define name="head">
+            </ui:define>
             <ui:define name="title">#{playForm.edit ? 'Izmena predstave' : 'Nova predstava'}</ui:define>
             <ui:define name="stripe1">
                 <div>Filter</div>
             </ui:define>
             <ui:define name="content">
                 <h:panelGroup id="izmena" rendererType="block" rendered="#{playForm.edit}">
-                    <h1>Izmena predstave: #{playForm.data.title}</h1>
+                    <h2>Izmena predstave: #{playForm.data.title}</h2>
                 </h:panelGroup>
                 <h:panelGroup id="nova" rendererType="block" rendered="#{not playForm.edit}">
-                    <h1>Nova predstava</h1>
+                    <h2>Nova predstava</h2>
                 </h:panelGroup>
-
-
+                
+    
                 <h:form>
                     <p:messages id="p-messages"/>
                     <div class="holder">
@@ -30,16 +32,19 @@
                     </div>
                     <div class="holder">
                         <label class="label">O predstavi: </label>
-                        <p:editor id="editor" required="true" requiredMessage="Obavezno polje" widgetVar="editorWidget" value="#{playForm.data.about}" width="600" />
+                        <p:editor id="editor" required="true" requiredMessage="Obavezno polje" widgetVar="editorWidget" value="#{playForm.data.about}"  />
                         <p:message id="messageAbout" for="editor" binding="#{playForm.aboutComp}" style="color: red" />
-                        <p:commandButton value="Obriši" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                        <p:commandButton value="Obriši sadržaj editora" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                     </div>
 
                     <h:panelGroup rendererType="block" style="margin-top: 10px">
                         <p:commandButton value="Sačuvaj" action="#{playForm.save}" update="p-messages p-messages-2 messageTitle messageAbout" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="true"/>
+                        <p:commandButton value="Sačuvaj i otvori novu" action="#{perfForm.saveAndNew}" icon="ui-icon-disk" ajax="false"/>
+                        <p:commandButton value="Sačuvaj i zadvori" action="#{perfForm.saveAndClose}" icon="ui-icon-disk" ajax="false"/>
+                        <p:button href="#{playForm.listUrl}" value="Lista predstava" />
                     </h:panelGroup>
                     <div style="margin-top: 10px">
-                        <h:outputLink value="#{playForm.listUrl}">Lista predstava</h:outputLink>
+                        
                     </div>
                     <p:dialog header="Info" widgetVar="dlg" showEffect="fade" hideEffect="fade">
                         <p:messages id="p-messages-2"/>

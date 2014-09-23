@@ -6,9 +6,11 @@
 
 package com.dostojic.njt.performance.beans;
 
+import com.dostojic.njt.db.dao.TicketDao;
 import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.performance.model.Performance;
 import com.dostojic.njt.performance.model.ex.PerformanceX;
+import com.dostojic.njt.util.JsfMessage;
 import com.dostojic.njt.util.JsfUtils;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -45,7 +47,13 @@ public class PerformanceList implements java.io.Serializable{
     }
     
     public void deleteData(Performance p){
-        PerformanceDao.getInstance().delete(p);
+        int count = TicketDao.getInstance().count("performance_id="+p.getId());
+        if (count > 0){
+            JsfMessage.error("Postoje karte za izvođenje ove predstve. Možete obrisati samo izvođenja bez prodatih karti.");
+        }else{
+            PerformanceDao.getInstance().delete(p);
+        }
+        
     }
     
 }

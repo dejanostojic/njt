@@ -12,12 +12,12 @@
             </ui:define>
             <ui:define name="content">
                 <div>
+                    <p:button href="/admin/play/form" value="Nova predstava" styleClass="right"/>
                     <h1>Lista predstava</h1>
-                    <h:outputLink  id="withIcon" value="/admin/play/form" >Nova predstava</h:outputLink>
                     <h:form id="listPlays">
                         <h:messages id="mess"/>
-                        <p:dataTable id="plays-table" var="play" value="#{playList.list}">
-                            <p:column headerText="naziv">
+                        <p:dataTable id="plays-table" var="play" value="#{playList.list}" emptyMessage="Nema predstava. Molimo unesite novu">
+                            <p:column headerText="Naziv">
                                 <h:outputText value="#{play.title}" />
                             </p:column>
 
@@ -25,13 +25,12 @@
                                 <h:outputText value="#{play.about}"  escape="false" />
                             </p:column>
                             
-                            <p:column headerText="Akcije">
-                                <h:outputLink value="/admin/play/form/#{play.id}" >Izmeni</h:outputLink>
+                            <p:column headerText="Akcije" styleClass="text-center" >
+                                <p:button href="/admin/play/form/#{play.id}" value="Izmeni" />
                                 <p:commandButton icon="ui-icon-circle-close" update=":listPlays:plays-table :listPlays:mess" value="Obrisi" actionListener="#{playList.deletePlay(play)}" ajax="true">
                                     <p:confirm header="Brisanje" message="Da li ste sigurni da želite da obrišete #{play.title}?" icon="ui-icon-alert" />
                                 </p:commandButton>
                             </p:column>
-                            
                         </p:dataTable>
                         
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">

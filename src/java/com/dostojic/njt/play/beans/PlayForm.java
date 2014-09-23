@@ -90,6 +90,7 @@ public class PlayForm extends FormBean<Play>{
         if (newData){
             PlayDao.getInstance().insert(data);
             JsfMessage.info("Uspešno sačuvana predstava: " + data.getTitle());
+            newData = false;
         }else{
             PlayDao.getInstance().update(data);
             JsfMessage.info("Uspešno promenjena predstava: " + data.getTitle());

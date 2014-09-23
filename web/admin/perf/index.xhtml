@@ -13,8 +13,9 @@
             </ui:define>
             <ui:define name="content">
                 <div>
+                    <p:button href="/admin/perf/form/" value="Novo izvođenje" styleClass="right"/>
                     <h1>Lista izvođenja</h1>
-                    <p:commandLink value="Novo izvođenje" id="withIcon" actionListener="#{perfList.newData}" />
+                    
                     <h:form>
                         <p:dataTable id="perfs-table" var="perf" value="#{perfList.list}">
                             <p:column headerText="Datum">
@@ -38,11 +39,11 @@
                             </p:column>
                             
                             <p:column headerText="Akcije">
-                                <h:outputLink value="/admin/perf/form/#{perf.id}" >Izmeni</h:outputLink>
+                                <p:button href="/admin/perf/form/#{perf.id}" value="Izmeni" />
                                 <p:commandButton update="perfs-table" value="Obrisi" actionListener="#{perfList.deleteData(perf)}" >
                                     <p:confirm header="Brisanje" message="Da li ste sigurni?" icon="ui-icon-alert" />
                                 </p:commandButton>
-                                <h:outputLink value="/admin/perf/tickets/#{perf.id}" >Karte</h:outputLink>
+                                <p:button href="/admin/perf/tickets/#{perf.id}" value="Karte" />
                             </p:column>
                             
                         </p:dataTable>

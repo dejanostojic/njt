@@ -119,7 +119,7 @@ body > .container {
 }
 
 .header {
-    background-color: #3468af;
+    background-color: #FFFFFF;
     /*min-height: 50px;*/
 }
 
@@ -556,4 +556,26 @@ table, td, th {
 th {
     background-color: #152B48;
     color: white;
+}
+                  
+h1, h2 {
+    color: #6a9ca7;
+    font-family: 'Hoefler Text',Georgia,'Times New Roman',serif;
+    font-size: 2.75em;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    line-height: 1.1em;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.fixed {
+    position:fixed !important;
+    top:0px !important;
+    width: 100% !important;
+}
+
+.errorRed {
+    color: #FF0000;
 }

@@ -7,18 +7,20 @@
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/Ticket.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/tickets.xhtml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/META-INF/context.xml</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/WrappedException.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceForm.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/play/index.xhtml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/BuyTicket.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceList.java</file>
-            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/TicketsEndpoint.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/play/beans/PlayList.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/TicketsEndpoint.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/WEB-INF/templates/admin.xhtml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/TicketStatus.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/JsfUtils.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketMessage.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/model/ext/TicketX.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/db/dao/TicketDao.java</file>
+            <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/play/form.xhtml</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/performance/logic/websockets/encdec/TicketDecoder.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/util/rewrite/ApplicationConfigurationProvider.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/form.xhtml</file>
