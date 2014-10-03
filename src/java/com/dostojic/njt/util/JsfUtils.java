@@ -7,6 +7,8 @@
 package com.dostojic.njt.util;
 
 import java.io.IOException;
+import java.util.Map;
+import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
@@ -38,7 +40,17 @@ public class JsfUtils {
     
     public static <T> T findBean(String beanName, Class<T> targetClass) {
         FacesContext context = FacesContext.getCurrentInstance();
-        return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", targetClass);
+        T bean = null;
+        try{
+            bean = (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", targetClass);
+        }catch(ELException e){
+            System.out.println("DEBUG ::: INFO ::: BEAN JE NULL: " + e.getMessage());
+        }catch(NullPointerException npe){
+            System.out.println("NullPointerException: " + npe.getMessage());
+        }catch(Exception e){
+            System.out.println("EXCEPTION: " + e.getMessage());
+        }
+        return bean;
     }
     
     public static HttpServletRequest getHttpServletReqest() {
@@ -100,4 +112,13 @@ public class JsfUtils {
         facesContext.setViewRoot(viewRoot);
         facesContext.renderResponse();
     }    
+    
+    public static void setSessionObject(Object bean, String name){
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        System.out.println("currentInstance: " + currentInstance);
+        ExternalContext externalContext = currentInstance.getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put(name, bean);
+//        FacesContext.getCurrentInstance().getExternalContext().gets
+    }
 }

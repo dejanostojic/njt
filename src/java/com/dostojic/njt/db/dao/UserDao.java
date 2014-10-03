@@ -59,7 +59,7 @@ public class UserDao extends GenericDao<User>{
             }
         });
         
-        add(new ColumnMapper("pass") {
+        add(new ColumnMapper("password") {
             @Override
             public void resultSetToDto(ResultSet rs, User dto, int index) throws SQLException {
                 dto.setPassword(rs.getString(index));
@@ -105,31 +105,19 @@ public class UserDao extends GenericDao<User>{
                 statement.setString(paramIndex, dto.getEmail());
             }
         });
-        /*
-        add(new ColumnMapper("user_kind_id") {
+        
+        add(new ColumnMapper("kind") {
             @Override
             public void resultSetToDto(ResultSet rs, User dto, int index) throws SQLException {
-                dto.setKindId(rs.getString(index));
+                dto.setKind(rs.getString(index));
             }
             
             @Override
             public void dtoToParam(User dto, PreparedStatement statement, int paramIndex) throws SQLException {
-                statement.setString(paramIndex, dto.getKindId());
+                statement.setString(paramIndex, dto.getKind());
             }
         });
         
-        add(new ColumnMapper("user_type_id") {
-            @Override
-            public void resultSetToDto(ResultSet rs, User dto, int index) throws SQLException {
-                dto.setTypeId(rs.getString(index));
-            }
-            
-            @Override
-            public void dtoToParam(User dto, PreparedStatement statement, int paramIndex) throws SQLException {
-                statement.setString(paramIndex, dto.getTypeId());
-            }
-        });
-        */
     }
     
     public User loadByUsername(String userName){

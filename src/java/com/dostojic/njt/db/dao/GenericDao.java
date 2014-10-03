@@ -224,8 +224,9 @@ public abstract class GenericDao<Dto> {
                                     throw new UnsupportedOperationException("field " + fieldName + " has no declared public setter method and can't be read from database!");
                                 }
                                 try {
-                                    Class a = ResultSet.class;
-                                    rs.getString(index);
+//                                    Class a = ResultSet.class;
+//                                    rs.getString(index);
+                                    System.out.println("field name: " + fieldName);
                                     if (setter.getParameterTypes()[0].isAssignableFrom(type)) {
                                         setter.invoke(dto, rs.getObject(index, type));
                                     }
@@ -314,7 +315,9 @@ public abstract class GenericDao<Dto> {
                 fields.get(i).resultSetToDto(rs, dto, i + 1);
             }
         } catch (SQLException e) {
+            Logger.getLogger(GenericDao.class.getName()).log(Level.SEVERE, null, e);
             throw new WrappedException(e);
+            
         }
     }
 
@@ -570,7 +573,7 @@ public abstract class GenericDao<Dto> {
                 + (CommonUtils.isEmpty(orderBy)
                 ? "" : "order by " + orderBy)
                 + (count > 0 ? " limit " + offset + "," + count : "");
-        
+        System.out.println("DEBUG ::: INFO ::: SQL =" + sql);
         return sql;
     }
     /*

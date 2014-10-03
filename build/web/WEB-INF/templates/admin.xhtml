@@ -52,15 +52,14 @@
                 </div>
             
             <div class="main">
-                <ui:remove>
                 <div class="sidebar" id="sidebar">
-                    <div class="sidebar-button fa fa-fw"></div>
-                    <div class="sidebar-arrow"></div>
                     <div class="sidebar-shadow"></div>
                     <ui:insert name="stripe1"/>
                 </div>  
-                </ui:remove>
+                
                 <div class="content fix" id="content">
+                    <div class="sidebar-arrow"></div>
+                    <div class="sidebar-button fa fa-fw" data-role="toggle-sidebar">-</div>
                     <ui:insert name="content"/>
                 </div>
                 
@@ -101,6 +100,34 @@
         (function(){
             window.onscroll = scrollHandler;
         }());
+                $('div[data-role="toggle-sidebar"]').click(function() {
+                    console.log('click')
+                    var shift = $('.sidebar').css("left");
+                    if (shift === '0px') {
+                        $('.sidebar,div.main').animate({
+                            left: '-=240',
+                            width: '+=240'
+                        }, 500, function() {
+//                         $('div.main').animate({
+//                                "margin-left": '-=240'
+//                            },500,function(){});
+                        });
+                        $('.sidebar-button').animate({
+                            left: '+=240'
+                        }, 500, function() {
+                        }).text('+');
+                    } else {
+                        $('.sidebar,div.main').animate({
+                            left: '+=240',
+                            width: '-=240'
+                        }, 500, function() {
+                        });
+                        $('.sidebar-button').animate({
+                            left: '-=240'
+                        }, 500, function() {
+                        }).text('-');
+                    }
+                });
         
         /* ]]> */
         </script>

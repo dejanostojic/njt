@@ -6,6 +6,7 @@
 
 package com.dostojic.njt.play.beans;
 
+import com.dostojic.njt.app.login.LoginContext;
 import com.dostojic.njt.db.dao.PlayDao;
 import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.play.model.Play;
@@ -52,6 +53,9 @@ public class PlayList implements java.io.Serializable{
         }
     }
     
+    public String getUserName(){
+        return LoginContext.getInstance().getUserName();
+    }
     
     
 }

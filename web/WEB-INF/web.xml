@@ -40,6 +40,17 @@
     </listener>
 
     <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>com.dostojic.njt.app.filter.AuthorizationFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
         <filter-name>OCPsoft Rewrite Filter</filter-name>
         <filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
         <async-supported>true</async-supported>

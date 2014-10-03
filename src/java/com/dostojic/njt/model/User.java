@@ -13,58 +13,31 @@ import java.io.Serializable;
  *
  * @author dejan
  */
-@Table(name = "user", autoIncrement = true)
+
 public class User implements Serializable{
 
-    @PrimaryKey
-    @Column(name = "id", isPrimaryKey = true)
     private long id;
     
-    @Column(name = "user_name")
     private String userName;
     
-    @Column(name = "password")
     private String password;
     
-    @Column(name = "first_name")
     private String firstName;
     
-    @Column(name = "last_name")
     private String lastName;
     
-    @Column(name = "email")
     private String email;
-    
-    /*
-    private String kindId;
-    private String typeId;
-    private KindUser kind;
-    
-    public String getKindId() {
-        return kindId;
-    }
 
-    public void setKindId(String kindId) {
-        this.kindId = kindId;
-    }
+    private String kind;
 
-    public String getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
-    }
-    
-    public KindUser getKind() {
+    public String getKind() {
         return kind;
     }
 
-    public void setKind(KindUser kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
     
-    */
     public String getEmail() {
         return email;
     }

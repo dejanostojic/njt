@@ -10,6 +10,22 @@
             <ui:define name="title">Lista izvođenja</ui:define>
             <ui:define name="stripe1">
                 <div>Filter</div>
+                <h:form>
+                    <label class="label">Scena: </label>
+                    <p:selectOneMenu value="#{perfList.stageId}" style="width: 200px;">
+                        <f:selectItems value="${perfList.stages}" />
+                    </p:selectOneMenu>
+
+                    <label class="label">Predstava: </label>
+                    <p:selectOneMenu value="#{perfList.playId}" style="width: 200px;">
+                        <f:selectItems value="${perfList.plays}" />
+                    </p:selectOneMenu>
+                    <label class="label">Cena od: </label>
+                <p:inputText value="#{perfList.minPrice}" />
+                <label class="label">Cena do: </label>
+                <p:inputText value="#{perfList.maxPrice}" />
+                <h:commandButton value="Filter" />
+                </h:form>
             </ui:define>
             <ui:define name="content">
                 <div>
