@@ -8,8 +8,11 @@
     <body>
         <ui:composition template="/WEB-INF/templates/admin.xhtml">
             <ui:define name="title">#{perfForm.edit ? 'Izmena izvodjenja' : 'Novo izvodjenje'}</ui:define>
-            <ui:define name="stripe1">
-                <div>Filter</div>
+            <ui:define name="no-sidebar">
+                <h:outputStylesheet name="css/hideLeft.css" library="dost"  />
+                <script type="text/javascript">
+                    var noLeft = true;
+                </script>
             </ui:define>
             <ui:define name="content">
                 <h:panelGroup rendererType="block" rendered="#{empty perfForm.data}">

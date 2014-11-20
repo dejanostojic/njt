@@ -1,0 +1,20 @@
+#sidebar {
+    display: none;
+}
+
+.sidebar-button {
+    display: none;
+}
+
+#content {
+    margin-left: 0;
+}
+
+.holder .label {
+    width: 150px;
+}
+
+.holder .value1 {
+    float: left;
+    width: auto;
+}

@@ -52,14 +52,16 @@
                 </div>
             
             <div class="main">
-                <div class="sidebar" id="sidebar">
-                    <div class="sidebar-shadow"></div>
-                    <ui:insert name="stripe1"/>
-                </div>  
-                
-                <div class="content fix" id="content">
-                    <div class="sidebar-arrow"></div>
+                <ui:insert name="no-sidebar">
+                    <div class="sidebar" id="sidebar">
+                        <div class="sidebar-shadow"></div>
+                        <div id="sidebarContent" style="">
+                        <ui:insert name="stripe1"/>
+                        </div>
+                    </div>
                     <div class="sidebar-button fa fa-fw" data-role="toggle-sidebar">-</div>
+                </ui:insert>
+                <div class="content fix" id="content">
                     <ui:insert name="content"/>
                 </div>
                 
@@ -73,13 +75,14 @@
             menuElem : document.getElementById('cssmenu'),
             headerElem : document.getElementById('logoHeader'),
             logoListElem : document.getElementById('logoList'),
+            sidebarElem : document.getElementById('sidebarContent'),
             menuFixed : false
         };
         function perfHideElem(elem){
-            elem.style='display: none; visibility: hidden;';
+            $(elem).attr('style','display: none; visibility: hidden;');
         }
         function perfShowElem(elem){
-            elem.style='display: block important!;';
+            $(elem).attr('style','display: block important!');
         }
         function scrollHandler(){
             var scroll = document.documentElement.scrollTop || document.body.scrollTop;
@@ -88,12 +91,19 @@
                 menuManipulation.menuFixed = true;
                 perfHideElem(menuManipulation.headerElem);
                 perfShowElem(menuManipulation.logoListElem);
-                menuManipulation.menuElem.className = 'fixed';
+                menuManipulation.menuElem.className = 'fixed top';
+                if (!noLeft){
+                    $(menuManipulation.sidebarElem).attr('style','position: fixed; top:52px; width: 240px;');
+                }
             }else if (menuManipulation.menuFixed && scroll === 0){
                 menuManipulation.menuFixed = false;
                 perfHideElem(menuManipulation.logoListElem);
                 perfShowElem(menuManipulation.headerElem);
                 menuManipulation.menuElem.className = '';
+                if (!noLeft){
+                    menuManipulation.sidebarElem.style = '';
+                }
+                
             }
         }
         
