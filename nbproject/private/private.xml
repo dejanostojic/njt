@@ -14,5 +14,28 @@
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/src/java/com/dostojic/njt/login/LoginBean.java</file>
             <file>file:/home/dostojic/Documents/NetBeans8Projects/njt/web/admin/perf/index.xhtml</file>
         </group>
+        <group>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/admin/play/form.xhtml</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/play/beans/PlayForm.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/db/dao/GenericDao.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/model/ext/ArtistPlayX.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/model/ArtistPlay.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/db/Database.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/util/FormBean.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/admin/loginForm.xhtml</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/index.html</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/so/artist/DeleteArtistSO.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/so/performance/GetAllPerformances.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/performance/model/Performance.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/so/performance/GetPerformancesForPlayOnStage.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/admin/perf/form.xhtml</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/performance/beans/PerformanceForm.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/admin/perf/index.xhtml</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/app/rewrite/ApplicationConfigurationProvider.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/app/filter/AuthorizationFilter.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/so/play/GetPlaysByName.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/src/java/com/dostojic/njt/login/LoginBean.java</file>
+            <file>file:/C:/Users/dostojic/Documents/NetBeansProjects/njt/web/META-INF/context.xml</file>
+        </group>
     </open-files>
 </project-private>

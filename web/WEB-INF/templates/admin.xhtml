@@ -18,15 +18,15 @@
         <div class="container">
             <div id="logoHeader" class="header"> 
                 <div class="logo" >
-                    <h:outputLink value="/index" title="Početna"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink>
+                    <h:outputLink value="/admin/" title="Početna"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink>
                 </div>
             </div>
             
             <div id='cssmenu' class="">
                 
                 <ul>
-                    <li id="logoList" style="display: none; visibility: hidden;"><h:outputLink value="/index" title="Početna" style="background-color: #fff; padding: 2px !important;"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink></li>
-                   <li class='active'><a href='/index'>Početna</a></li>
+                    <li id="logoList" style="display: none; visibility: hidden;"><h:outputLink value="/admin/" title="Početna" style="background-color: #fff; padding: 2px !important;"><h:graphicImage name="img/fon-logo.gif" alt="FON logo" library="dost"/></h:outputLink></li>
+                   <li class='active'><a href='/admin/'>Početna</a></li>
                    <li class='has-sub'><a href='/admin/play/index'>Predstave</a>
                       <ul>
                          <li class='has-sub'><a href='/admin/play/index'>Lista predstava</a>
@@ -47,7 +47,7 @@
                             <li><a href='/admin/perf/form/'>Novo izvođenje</a></li>
                        </ul>
                    </li>
-                   <li><a href='#'>Contact</a></li>
+                   <li style="float: right"><a href='/dost/logout' >logout</a></li>
                 </ul>
                 </div>
             
@@ -86,13 +86,14 @@
         }
         function scrollHandler(){
             var scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            var noLeftSide = noLeft || false;
             if (!menuManipulation.menuFixed && scroll > 46){
                 console.log('if');
                 menuManipulation.menuFixed = true;
                 perfHideElem(menuManipulation.headerElem);
                 perfShowElem(menuManipulation.logoListElem);
                 menuManipulation.menuElem.className = 'fixed top';
-                if (!noLeft){
+                if (!noLeftSide){
                     $(menuManipulation.sidebarElem).attr('style','position: fixed; top:52px; width: 240px;');
                 }
             }else if (menuManipulation.menuFixed && scroll === 0){
@@ -100,7 +101,7 @@
                 perfHideElem(menuManipulation.logoListElem);
                 perfShowElem(menuManipulation.headerElem);
                 menuManipulation.menuElem.className = '';
-                if (!noLeft){
+                if (!noLeftSide){
                     menuManipulation.sidebarElem.style = '';
                 }
                 

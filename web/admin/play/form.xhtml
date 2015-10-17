@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
       xmlns:tags="http://xmlns.jcp.org/jsf/composite/dost/tags"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
         <ui:composition template="/WEB-INF/templates/admin.xhtml">
@@ -23,7 +24,7 @@
                 </h:panelGroup>
                 
     
-                <h:form>
+                <h:form id="form">
                     <p:messages id="p-messages"/>
                     <div class="holder">
                         <label for="playTitle" class="label">Naziv: </label>
@@ -36,11 +37,49 @@
                         <p:message id="messageAbout" for="editor" binding="#{playForm.aboutComp}" style="color: red" />
                         <p:commandButton value="Obriši sadržaj editora" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                     </div>
+                    
+                    <div class="holder">
+                        <p:growl id="msgs" showDetail="true"/><p:messages id="p-messages2"/>
+                           
+                        <p:contextMenu for="cars2" widgetVar="cMenu">   
+                            <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('cellCars').showCellEditor();return false;"/>  
+                            <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
+                        </p:contextMenu> 
+
+                        
+                        <p:dataTable id="cars2" var="artistPlay" value="#{playForm.artists}" editable="true" editMode="cell" widgetVar="cellCars">
+                            <f:facet name="header">
+                                Glumci
+                            </f:facet>
+                            
+                            <p:ajax event="cellEdit" listener="#{playForm.onCellEdit}" update=":form:msgs :form:cars2" />
+
+                            <p:column headerText="Artist">
+                                <h:selectOneMenu id="artist" value="#{artistPlay.artistId}" style="width:100%">
+                                    <f:selectItems value="#{playForm.allArtists}" var="man" itemLabel="#{man.firstName} #{man.lastName}, #{man.id}" itemValue="#{man.id}" />
+                                    <f:ajax execute="artist"  render="@form" />
+                                </h:selectOneMenu>
+                            </p:column>
+
+
+                            <p:column headerText="Role">
+                                <h:inputText value="#{artistPlay.role}" />
+                            </p:column>
+                            
+                            <p:column headerText="Delete">
+                                <p:commandButton ajax="false" value="Izbaci" action="#{playForm.removeArtist(artistPlay)}" >
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>  
+                        <p:commandButton ajax="false" value="Dodaj novog glumca" action="#{playForm.addNewArtist()}" >
+                        </p:commandButton>
+                    </div>
 
                     <h:panelGroup rendererType="block" style="margin-top: 10px">
-                        <p:commandButton value="Sačuvaj" action="#{playForm.save}" update="p-messages p-messages-2 messageTitle messageAbout" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="true"/>
-                        <p:commandButton value="Sačuvaj i otvori novu" action="#{perfForm.saveAndNew}" icon="ui-icon-disk" ajax="false"/>
-                        <p:commandButton value="Sačuvaj i zadvori" action="#{perfForm.saveAndClose}" icon="ui-icon-disk" ajax="false"/>
+                        <p:commandButton value="Sačuvaj"  action="#{playForm.save}" update="p-messages p-messages-2 messageTitle messageAbout" oncomplete="PF('dlg').show()" icon="ui-icon-disk" ajax="false"/>
+                        <p:commandButton value="Sačuvaj i otvori novu" action="#{playForm.saveAndNew}" icon="ui-icon-disk" ajax="false"/>
+                        <p:commandButton value="Sačuvaj i zadvori" action="#{playForm.saveAndClose}" icon="ui-icon-disk" ajax="false"/>
                         <p:button href="#{playForm.listUrl}" value="Lista predstava" />
                     </h:panelGroup>
                     <div style="margin-top: 10px">

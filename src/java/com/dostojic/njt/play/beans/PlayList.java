@@ -8,6 +8,8 @@ package com.dostojic.njt.play.beans;
 
 import com.dostojic.njt.app.login.LoginContext;
 import com.dostojic.njt.db.dao.PlayDao;
+import com.dostojic.njt.db.util.CommonUtils;
+import com.dostojic.njt.db.util.QueryUtils;
 import com.dostojic.njt.performance.dao.PerformanceDao;
 import com.dostojic.njt.play.model.Play;
 import com.dostojic.njt.util.JsfMessage;
@@ -26,12 +28,34 @@ import javax.faces.bean.RequestScoped;
 public class PlayList implements java.io.Serializable{
     public static final String MANAGED_BEAN_NAME = "playList";
     
+    private String title;
+    
+            
     public PlayList getInstance(){
         return JsfUtils.findBean(MANAGED_BEAN_NAME);
     }
     
     public List<Play> getList() {
-        return PlayDao.getInstance().loadAll();
+        return PlayDao.getInstance().loadList(sqlStringCondition(), "title");
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    
+    private String sqlStringCondition(){
+        StringBuilder where = new StringBuilder("true");
+        
+        if (!CommonUtils.isEmpty(title)){
+            where.append(" and title like ").append(QueryUtils.mySqlLikeLiteral(title));
+        }
+        
+        return where.toString();
     }
     
     public void newPlay(ActionEvent event){

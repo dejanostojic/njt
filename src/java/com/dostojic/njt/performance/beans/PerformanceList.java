@@ -35,8 +35,8 @@ public class PerformanceList implements java.io.Serializable{
     
     // filters
     private long stageId;
-    private double minPrice = 0;
-    private double maxPrice = -1;
+    private int minPrice = 0;
+    private int maxPrice = -1;
     private long playId;
 
     public long getStageId() {
@@ -55,19 +55,19 @@ public class PerformanceList implements java.io.Serializable{
         this.playId = playId;
     }
 
-    public double getMinPrice() {
+    public int getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(double minPrice) {
+    public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
     }
 
-    public void setMaxPrice(double maxPrice) {
+    public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public double getMaxPrice() {
+    public int getMaxPrice() {
         return maxPrice;
     }
     
@@ -75,8 +75,12 @@ public class PerformanceList implements java.io.Serializable{
     @PostConstruct
     public void init(){
         Performance p = PerformanceDao.getInstance().loadFirst("", "price desc");
+        Performance pMin = PerformanceDao.getInstance().loadFirst("", "price asc");
         if (p != null){
-            maxPrice = p.getPrice();
+            maxPrice = (int) p.getPrice();
+        }
+        if (pMin != null){
+            minPrice = (int) pMin.getPrice();
         }
     }
     
@@ -94,10 +98,10 @@ public class PerformanceList implements java.io.Serializable{
             where.append(" and stage_id=").append(stageId);
         }
         if (minPrice > 0){
-            where.append(" and price>").append(minPrice);
+            where.append(" and price>=").append(minPrice);
         }
         if (maxPrice > 0){
-            where.append(" and price<").append(maxPrice);
+            where.append(" and price<=").append(maxPrice);
         }
         
         return where.toString();

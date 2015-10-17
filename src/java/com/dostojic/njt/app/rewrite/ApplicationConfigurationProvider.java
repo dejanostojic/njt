@@ -60,9 +60,10 @@ public class ApplicationConfigurationProvider extends HttpConfigurationProvider 
 //                .perform(Log.message(Level.INFO, "Client requested path: {path}").and(Redirect.permanent(context.getContextPath() + "/admin/loginForm.xhtml")))
 //                .where("path").matches("^/admin/.*")
                 
-                .addRule(Join.path("/").to("/admin/play/index.xhtml"))
-                .addRule(Join.path("/admin/{type}/$").to("/admin/{type}/index.xhtml"))
-                .addRule(Join.path("/admin/{type}/index$").to("/admin/{type}/index.xhtml"))
+                .addRule(Join.path("/admin").to("/admin/play/index.xhtml"))
+                .addRule(Join.path("/admin/").to("/admin/play/index.xhtml"))
+                .addRule(Join.path("/admin/{type}/").to("/admin/{type}/index.xhtml"))
+                .addRule(Join.path("/admin/{type}/index").to("/admin/{type}/index.xhtml"))
                 .addRule(Join.path("/admin/play/form/{playId}").to("/admin/play/form.xhtml")).where("playId").matches("[0-9]*")
                 .addRule(Join.path("/admin/perf/form/{perfId}").to("/admin/perf/form.xhtml")).where("perfId").matches("[0-9]*")
                 .addRule(Join.path("/admin/perf/tickets/{perfId}").to("/admin/perf/tickets.xhtml")).where("perfId").matches("[0-9]*")

@@ -80,7 +80,7 @@ public class LoginContext implements java.io.Serializable{
         JsfUtils.getHttpServletReqest().setAttribute(MANAGED_BEAN_NAME, anon());
     }
     
-    private static LoginContext anon(){
+    public static LoginContext anon(){
         LoginContext lc = new LoginContext();
         lc.setRole(UserRole.anonymous);
         return lc;

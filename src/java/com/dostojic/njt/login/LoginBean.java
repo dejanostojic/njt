@@ -33,15 +33,21 @@ public class LoginBean implements java.io.Serializable{
     public LoginBean() throws ServletException {
         String backPar = JsfUtils.getParameter("back");
         String logout = JsfUtils.getParameter("logout");
-        back = backPar != null ? backPar : "";
+        back = backPar != null ? backPar : "/admin";
 
         if ("true".equals(logout)) {
-            JsfUtils.getHttpServletReqest().logout();
+//            JsfUtils.getHttpServletReqest().logout();
+            LoginContext.getInstance().logOut();
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
             String baseUrl = viewHandler.getActionURL(facesContext, facesContext.getViewRoot().getViewId());
             JsfUtils.navigateRedirect(baseUrl, "back=" + back);
         }
+    }
+    
+    public void doLogout(){
+        LoginContext.getInstance().logOut();
+        JsfUtils.redirectToUrl("/admin/");
     }
     
     public void doLogin() {

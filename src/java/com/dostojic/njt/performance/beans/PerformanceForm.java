@@ -55,6 +55,7 @@ public class PerformanceForm extends FormBean<Performance>{
 
     @Override
     public String getListUrl() {
+        System.out.println("GET PERF LIST URL!");
         return "/admin/perf/index";
     }
     

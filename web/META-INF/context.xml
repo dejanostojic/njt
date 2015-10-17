@@ -1,2 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/faces"/>
+<Context path=""
+        docBase="C:\Users\dostojic\Documents\NetBeansProjects\njt\build\web\"
+        crossContext="true"
+        debug="0"
+        reloadable="true"
+        trusted="true"
+        swallowOutput="true">
+
+    <Parameter name="serverName"
+         value="njt-loc"
+         override="false"/>
+    
+    <Parameter name="environment" 
+        value="TEST" 
+        override="false"/>
+
+     <Parameter name="uploadPath" 
+        value="C:\Users\dostojic\Documents\njt-loc\upload"
+        override="false"/>
+
+     <Parameter name="javax.faces.FACELETS_REFRESH_PERIOD"
+	value="0" 
+	override="false" />
+
+     <Parameter name="javax.faces.PROJECT_STAGE"
+	value="Development" 
+	override="false" />
+
+     <Resource name="jdbc/njtDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        validationQuery="SELECT 1"
+        maxActive="100"
+        maxIdle="30"
+        maxWait="10000"
+        username="root"
+        password="dostojic123"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost/theatre?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8" />
+        
+</Context>
